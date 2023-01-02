@@ -29,18 +29,8 @@ const tabsSwitch = (evt) => {
       formDisabler(targetTab.dataset.tab);
     }
   });
-  // deliveryTabs.forEach((tab) => {
-  //   if (!tab.classList.contains('active')) {
-  //     tab.classList.add('active');
-  //     formDisabler(tab.dataset.tab);
-  //   } else {
-  //     tab.classList.remove('active');
-  //   }
-  // });
 };
 
 deliveryTabs.forEach((tab) => {
   tab.addEventListener('click', tabsSwitch);
 });
-
-
