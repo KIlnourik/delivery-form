@@ -1,2 +1,3 @@
 import './modules/form-switch.js';
-import './modules/delivery-form.js';
+import './modules/pickup-form.js';
+import './modules/city-tabs.js';

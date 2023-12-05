@@ -1,4 +1,4 @@
-
+import { setActiveTab } from './utils.js';
 
 const pickUpBlock = document.querySelector('.tabs-block__pick-up');
 const payTabsWrapper = pickUpBlock.querySelector('.input-wrapper--payment-method');
@@ -20,13 +20,10 @@ const cardFieldDisable = (value) => {
 };
 
 const payTabOnclickChange = (evt) => {
-  payTabs.forEach((payTab) => {
-    if (payTab.checked === true) {
-      payTab.checked = false;
-    }
-  });
-  evt.target.checked = true;
+  setActiveTab(evt, payTabs);
   cardFieldDisable(evt.target.value);
 };
 
 payTabs.forEach((tab) => tab.addEventListener('click', payTabOnclickChange));
+
+
