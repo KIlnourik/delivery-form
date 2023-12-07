@@ -29,11 +29,12 @@ const renderDeliveryPoints = (currentTab) => {
 
     const deliveryPointsFragment = document.createDocumentFragment();
 
-    deliveryPoints.forEach(({ address }, index) => {
+    deliveryPoints.forEach(({ address, coordinates }, index) => {
       const addressElement = addressTemplate.cloneNode(true);
 
       addressElement.querySelector('input[name="address"]').value = address;
       addressElement.querySelector('input[name="address"]').setAttribute('id', `pick-up-address-${index + 1}`);
+      addressElement.querySelector('input[name="address"]').dataset.coordinates = coordinates;
       addressElement.querySelector('#address-label').textContent = address;
       addressElement.querySelector('#address-label').setAttribute('for', `pick-up-address-${index + 1}`);
 
