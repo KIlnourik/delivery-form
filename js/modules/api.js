@@ -7,13 +7,13 @@ const SEND_URL = 'https://mock.pages.academy/delivery/requests';
 const getData = (onSuccess) => {
   fetch(GET_URL)
     .then((response) => {
-      if (!response.ok) {
-        throw new Error(`
-        ${response.status}
-        ${response.statusText}
-        `);
+      if (response.ok) {
+        return response.json();
       }
-      return response.json();
+      throw new Error(`
+      ${response.status}
+      ${response.statusText}
+      `);
     })
     .then((data) => {
       onSuccess(data.cities);

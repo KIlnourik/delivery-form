@@ -31,20 +31,14 @@ const cityDataAdapter = (oneCity) => {
     id,
     city,
     'city-id': cityId,
-    'delivery-points': [{
-      address,
-      coordinates
-    }],
+    'delivery-points': deliveryPoints,
   } = oneCity;
 
   return {
     id,
     city,
     cityId,
-    deliveryPoint: {
-      address,
-      coordinates
-    },
+    deliveryPoints,
   };
 };
 
