@@ -11,9 +11,20 @@ const renderDeliveryPoints = (currentTab) => {
     const adaptedCity = adoptCitiesData(cities).find((city) => city.cityId === currentTab);
     const { deliveryPoints } = adaptedCity;
 
+    if (!deliveryPoints) {
+      const noPointsMessage = document.createElement('h4');
+      noPointsMessage.textContent = 'В данном городе нет пунктов выдачи заказов';
+      noPointsMessage.setAttribute('id', 'no-points-message');
+      addressTabs.appendChild(noPointsMessage);
+    }
+
     if (addressTabs.contains(addressTabs.querySelector('input[name="address"]')) && addressTabs.contains(addressTabs.querySelector('#address-label'))) {
       addressTabs.querySelectorAll('input[name="address"]').forEach((item) => item.remove());
       addressTabs.querySelectorAll('#address-label').forEach((item) => item.remove());
+    }
+
+    if (addressTabs.contains(addressTabs.querySelector('no-points-message'))) {
+      addressTabs.querySelector('no-points-message').remove();
     }
 
     const deliveryPointsFragment = document.createDocumentFragment();
