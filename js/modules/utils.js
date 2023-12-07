@@ -48,6 +48,8 @@ const cityDataAdapter = (oneCity) => {
   };
 };
 
+const adoptCitiesData = (cities) => cities.slice().map((city) => cityDataAdapter(city));
+
 const setActiveTab = (evt, tabs) => {
   tabs.forEach((tab) => {
     if (tab.checked === true) {
@@ -57,4 +59,4 @@ const setActiveTab = (evt, tabs) => {
   evt.target.checked = true;
 };
 
-export { showAlert, cityDataAdapter, setActiveTab };
+export { showAlert, cityDataAdapter, setActiveTab, adoptCitiesData };

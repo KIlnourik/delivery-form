@@ -1,4 +1,4 @@
-import { showAlert, cityDataAdapter } from './utils.js';
+import { showAlert } from './utils.js';
 
 const GET_URL = 'https://mock.pages.academy/delivery/db';
 
@@ -7,19 +7,16 @@ const SEND_URL = 'https://mock.pages.academy/delivery/requests';
 const getData = (onSuccess) => {
   fetch(GET_URL)
     .then((response) => {
-      if (response.ok) {
-        return response.json();
+      if (!response.ok) {
+        throw new Error(`
+        ${response.status}
+        ${response.statusText}
+        `);
       }
-      throw new Error(`
-      ${response.status}
-      ${response.statusText}
-      `);
+      return response.json();
     })
     .then((data) => {
-      const { cities } = data;
-      const adoptedCities = [...cities].map((city) => cityDataAdapter(city));
-
-      onSuccess(adoptedCities);
+      onSuccess(data.cities);
     })
     .catch((err) => {
       showAlert(`Ошибка! ${err.message}`);
