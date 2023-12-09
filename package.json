@@ -4,7 +4,7 @@
   "description": "Personal project provided by HTML Academy",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KIlnourik/Delivery-from.git"
+    "url": "git+https://github.com/KIlnourik/delivery-form.git"
   },
   "keywords": [
     "delivery"
@@ -12,9 +12,9 @@
   "author": "Kurmandaev Ilnur",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/KIlnourik/Delivery-from/issues"
+    "url": "https://github.com/KIlnourik/delivery-form/issues"
   },
-  "homepage": "https://github.com/KIlnourik/Delivery-from#readme",
+  "homepage": "https://github.com/KIlnourik/delivery-form#readme",
   "scripts": {
     "start": "browser-sync start --server --no-ui --files \"js/**/*.js\"",
     "lint": "eslint js/"

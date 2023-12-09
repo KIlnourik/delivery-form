@@ -66,7 +66,7 @@
                 <input id="payment-cash" type="radio" name="payment-method" value="cash" />
                 <label for="payment-cash">Наличные</label>
               </div>
-              <div class="input-wrapper input-wrapper--error input-wrapper--input-group card">
+              <div class="input-wrapper input-wrapper--input-group card">
                 <h4>Номер карты</h4>
                 <input id="card-fields-1" type="text" required />
                 <label for="card-fields-1" aria-label="Первые четыре цифр с карты"></label>
@@ -78,7 +78,7 @@
                 <label for="card-fields-4" aria-label="Четвёртые четыре цифр с карты"></label>
                 <div class="input-wrapper__error">Введите верный номер карты</div>
               </div>
-              <div class="input-wrapper input-wrapper--input">
+              <div class="input-wrapper input-wrapper--input phone">
                 <h4>Номер телефона</h4>
                 <input id="phone" name="phone" type="text" placeholder="+7(999)999-99-99" />
                 <label for="phone" aria-label="Введите верный номер телефона, он должен начинаться с +7"></label>
@@ -193,6 +193,10 @@
   <template id="address-template">
     <input id="pick-up-address" type="radio" name="address" value="Ленина, 10"/>
     <label id="address-label" for="pick-up-address-1">Ленина, 10</label>
+  </template>
+
+  <template>
+
   </template>
 
   <script src="./leaflet/leaflet.js"></script>

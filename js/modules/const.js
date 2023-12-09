@@ -16,11 +16,25 @@ const DEFAULT_MAP_SETTINGS = {
 
 const MAP_ADDRESS_SCALE = 12;
 
+const INPUT_ERROR_TEXT = {
+  cardError: 'Введите верный номер карты',
+  phoneError: 'Введите верный номер телефона, он должен начинаться с +7',
+  addressError: 'Укажите адрес',
+  dateError: 'Укажите корректную дату доставки'
+};
+
+const INPUT_ERR0R_CLASS = 'input-wrapper--error';
+const CARD_INPUT_MAXLENGTH = 4;
+
+
 export {
   ALERT_SHOW_TIME,
   CURRENT_PIN_SETTINGS,
   SIMPLE_PIN_SETTINGS,
   DEFAULT_MAP_SETTINGS,
   MAP_ADDRESS_SCALE,
-  RERENDER_DELAY
+  RERENDER_DELAY,
+  INPUT_ERR0R_CLASS,
+  INPUT_ERROR_TEXT,
+  CARD_INPUT_MAXLENGTH
 };
