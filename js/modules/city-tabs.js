@@ -1,5 +1,7 @@
 import { getData } from './api.js';
-import { setActiveTab, adoptCitiesData } from './utils.js';
+import { setActiveTab, adoptCitiesData, debounce } from './utils.js';
+import { createСurrentAddressMarker } from './map.js';
+import { RERENDER_DELAY } from './const.js';
 
 const cityTabs = document.querySelectorAll('input[name="city"]');
 const addressTemplate = document.querySelector('#address-template').content;
@@ -31,6 +33,13 @@ const removeDeliveryPoints = () => {
   addressTabs.querySelectorAll('#address-label').forEach((item) => item.remove());
 };
 
+const onAddressTabClick = (evt) => {
+  const addressInputs = document.querySelectorAll('input[name=address]');
+  setActiveTab(evt, addressInputs);
+  const activeTabCoordinates = evt.target.dataset.coordinates;
+  createСurrentAddressMarker(activeTabCoordinates);
+};
+
 const renderDeliveryPoints = (currentTab) => {
   getData((cities) => {
     const adaptedCity = adoptCitiesData(cities).find((city) => city.cityId === currentTab);
@@ -57,13 +66,9 @@ const renderDeliveryPoints = (currentTab) => {
     });
 
     addressTabs.appendChild(deliveryPointsFragment);
-  });
-};
 
-const onAddressTabClick = (evt) => {
-  const addressInputs = document.querySelectorAll('input[name=address]');
-  setActiveTab(evt, addressInputs);
-  const activeTabCoordinates = evt.target.dataset.split(',');
+    addressTabs.querySelectorAll('input[name="address"]').forEach((tab) => tab.addEventListener('click', debounce(onAddressTabClick), RERENDER_DELAY));
+  });
 };
 
 const onCityTabClick = (evt) => {
@@ -75,5 +80,3 @@ const onCityTabClick = (evt) => {
 renderDeliveryPoints(activeTab);
 
 cityTabs.forEach((tab) => tab.addEventListener('click', onCityTabClick));
-
-console.log(document.querySelectorAll('input[name="address"]'));
