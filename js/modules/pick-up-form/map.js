@@ -1,4 +1,4 @@
-import { CURRENT_PIN_SETTINGS, DEFAULT_MAP_SETTINGS, MAP_ADDRESS_SCALE } from './const.js';
+import { CURRENT_PIN_SETTINGS, DEFAULT_MAP_SETTINGS, MAP_ADDRESS_SCALE } from '../const.js';
 
 const map = L.map('map')
   .setView({

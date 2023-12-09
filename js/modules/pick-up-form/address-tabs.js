@@ -1,7 +1,7 @@
-import { getData } from './api.js';
-import { setActiveTab, adoptCitiesData, debounce } from './utils.js';
+import { getData } from '../api.js';
+import { setActiveTab, adoptCitiesData, debounce } from '../utils.js';
 import { createСurrentAddressMarker } from './map.js';
-import { RERENDER_DELAY } from './const.js';
+import { RERENDER_DELAY } from '../const.js';
 
 const addressTemplate = document.querySelector('#address-template').content;
 const addressTabs = document.querySelector('#address-tabs');

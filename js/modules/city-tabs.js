@@ -1,5 +1,5 @@
 import { setActiveTab } from './utils.js';
-import { renderDeliveryPoints } from './address-tabs.js';
+import { renderDeliveryPoints } from './pick-up-form/address-tabs.js';
 
 const cityTabs = document.querySelectorAll('input[name="city"]');
 
