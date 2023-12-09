@@ -62,4 +62,6 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-export { showAlert, cityDataAdapter, setActiveTab, adoptCitiesData, debounce };
+const getCityCoordinates = (tab) => tab.dataset.coordinates.split(',');
+
+export { showAlert, cityDataAdapter, setActiveTab, adoptCitiesData, debounce, getCityCoordinates };

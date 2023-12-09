@@ -4,6 +4,8 @@ import { setActiveTab, adoptCitiesData } from './utils.js';
 const cityTabs = document.querySelectorAll('input[name="city"]');
 const addressTemplate = document.querySelector('#address-template').content;
 const addressTabs = document.querySelector('#address-tabs');
+
+document.querySelector('#pick-up-led').checked = true;
 let activeTab = 'led';
 
 const apendNodes = (address, coordinates, index) => {
@@ -58,10 +60,20 @@ const renderDeliveryPoints = (currentTab) => {
   });
 };
 
-renderDeliveryPoints(activeTab);
+const onAddressTabClick = (evt) => {
+  const addressInputs = document.querySelectorAll('input[name=address]');
+  setActiveTab(evt, addressInputs);
+  const activeTabCoordinates = evt.target.dataset.split(',');
+};
 
-cityTabs.forEach((tab) => tab.addEventListener('click', (evt) => {
+const onCityTabClick = (evt) => {
   setActiveTab(evt, cityTabs);
   activeTab = evt.target.value.toLowerCase();
   renderDeliveryPoints(activeTab);
-}));
+};
+
+renderDeliveryPoints(activeTab);
+
+cityTabs.forEach((tab) => tab.addEventListener('click', onCityTabClick));
+
+console.log(document.querySelectorAll('input[name="address"]'));

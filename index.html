@@ -45,7 +45,7 @@
               <h3>Самовывоз</h3>
               <div class="input-wrapper input-wrapper--radio-group">
                 <h4>Город</h4>
-                <input id="pick-up-led" type="radio" name="city" value="lED" checked />
+                <input id="pick-up-led" type="radio" name="city" value="lED" />
                 <label for="pick-up-led">Санкт-Петербург</label>
                 <input id="pick-up-mow" type="radio" name="city" value="mow" />
                 <label for="pick-up-mow">Москва</label>
@@ -57,7 +57,7 @@
               <div class="input-wrapper input-wrapper--radio-group" id="address-tabs">
                 <h4>Адрес пункта выдачи заказов</h4>
               </div>
-              <div class="map"></div>
+              <div class="map" id="map"></div>
               <h3>Способ оплаты</h3>
               <div class="input-wrapper input-wrapper--radio-group input-wrapper--payment-method">
                 <input id="payment-card" type="radio" name="payment-method" value="card" />
@@ -194,6 +194,7 @@
     <label id="address-label" for="pick-up-address-1">Ленина, 10</label>
   </template>
 
+  <script src="./leaflet/leaflet.js"></script>
   <script src="./js/main.js" type="module"></script>
 
 </body>
