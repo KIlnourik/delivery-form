@@ -14,7 +14,7 @@ const DEFAULT_MAP_SETTINGS = {
   scale: 3
 };
 
-const MAP_ADDRESS_SCALE = 12;
+const MAP_ADDRESS_SCALE = 15;
 
 const INPUT_ERROR_TEXT = {
   cardError: 'Введите верный номер карты',
@@ -25,7 +25,7 @@ const INPUT_ERROR_TEXT = {
 
 const INPUT_ERR0R_CLASS = 'input-wrapper--error';
 const CARD_INPUT_MAXLENGTH = 4;
-
+const CARD_NUMBER_LENGTH = 16;
 
 export {
   ALERT_SHOW_TIME,
@@ -36,5 +36,6 @@ export {
   RERENDER_DELAY,
   INPUT_ERR0R_CLASS,
   INPUT_ERROR_TEXT,
-  CARD_INPUT_MAXLENGTH
+  CARD_INPUT_MAXLENGTH,
+  CARD_NUMBER_LENGTH
 };
