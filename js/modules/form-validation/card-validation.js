@@ -1,4 +1,5 @@
-import { CARD_INPUT_MAXLENGTH, CARD_NUMBER_LENGTH, INPUT_ERR0R_CLASS } from '../const.js';
+import { CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS } from '../const.js';
+import { getFullCardNumber } from '../utils.js';
 
 const cardInputsContainer = document.querySelector('.card');
 const cardInputs = cardInputsContainer.querySelectorAll('input');
@@ -23,7 +24,6 @@ const validateCardNumberMoonAlgorithm = (cardNumberValue) => {
     for (const [index, num] of cardnumbers.entries()) {
       if (index % 2 === 0) {
         const buffer = num * 2;
-        // eslint-disable-next-line no-unused-expressions
         if (buffer > 9) {
           checksum += buffer - 9;
         } else {
@@ -40,24 +40,8 @@ const validateCardNumberMoonAlgorithm = (cardNumberValue) => {
   }
 };
 
-const getFullCardNumber = () => {
-  const fullCardNumber = [];
-  for (let i = 0; i <= cardInputs.length - 1; i++) {
-    if (cardInputs[i].value.length === CARD_INPUT_MAXLENGTH &&
-      !isNaN(Number(cardInputs[i].value))) {
-      fullCardNumber.push(cardInputs[i].value);
-    }
-  }
-  const completeCardNumber = fullCardNumber.join('');
-  if (completeCardNumber.length === CARD_NUMBER_LENGTH) {
-    return completeCardNumber;
-  } else {
-    return null;
-  }
-};
-
 const validateCardNumber = () => {
-  const full = getFullCardNumber();
+  const full = getFullCardNumber(cardInputs);
   const isValidCardNumber = validateCardNumberMoonAlgorithm(full);
   if (!isValidCardNumber) {
     cardInputsContainer.classList.add(INPUT_ERR0R_CLASS);
