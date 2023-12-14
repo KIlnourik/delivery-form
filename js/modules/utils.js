@@ -1,4 +1,4 @@
-import { ALERT_SHOW_TIME, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, CARD_NUMBER_LENGTH } from './const.js';
+import { ALERT_SHOW_TIME } from './const.js';
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('p');
@@ -64,28 +64,6 @@ const debounce = (callback, timeoutDelay = 500) => {
 
 const getCityCoordinates = (tab) => tab.dataset.coordinates.split(',');
 
-const getFullCardNumber = (inputs, cardContainer) => {
-  const result = [];
-
-  inputs.forEach((input) => {
-    if (input.value.length === CARD_INPUT_MAXLENGTH && !isNaN(Number(input.value))) {
-      result.push(input.value);
-    } else {
-      cardContainer.classList.add(INPUT_ERR0R_CLASS);
-    }
-  });
-
-  const resultCardNumber = result.join('');
-
-  if (resultCardNumber.length !== CARD_NUMBER_LENGTH) {
-    cardContainer.classList.add(INPUT_ERR0R_CLASS);
-    return [];
-  }
-
-  cardContainer.classList.remove(INPUT_ERR0R_CLASS);
-  return resultCardNumber;
-};
-
 export {
   showAlert,
   cityDataAdapter,
@@ -93,5 +71,4 @@ export {
   adoptCitiesData,
   debounce,
   getCityCoordinates,
-  getFullCardNumber
 };
