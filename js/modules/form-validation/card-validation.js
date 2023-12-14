@@ -1,4 +1,4 @@
-import { CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS } from '../const.js';
+import { CARD_INPUT_MAXLENGTH} from '../const.js';
 import { getFullCardNumber, setErrorClassToContainer } from '../utils.js';
 
 const cardInputsContainer = document.querySelector('.card');
@@ -45,10 +45,8 @@ const validateCardNumber = () => {
   const isValidCardNumber = validateCardNumberMoonAlgorithm(full);
   setErrorClassToContainer(cardInputsContainer, isValidCardNumber);
   if (!isValidCardNumber) {
-    // cardInputsContainer.classList.add(INPUT_ERR0R_CLASS);
     return null;
   }
-  // cardInputsContainer.classList.remove(INPUT_ERR0R_CLASS);
   return full;
 };
 

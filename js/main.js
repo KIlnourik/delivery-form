@@ -4,4 +4,4 @@ import './modules/city-tabs.js';
 import './modules/pick-up-form/address-tabs.js';
 import './modules/pick-up-form/map.js';
 import './modules/form-validation/card-validation.js';
-
+import './modules/form-validation/phone-validation.js';

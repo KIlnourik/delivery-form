@@ -27,6 +27,9 @@ const INPUT_ERR0R_CLASS = 'input-wrapper--error';
 const CARD_INPUT_MAXLENGTH = 4;
 const CARD_NUMBER_LENGTH = 16;
 
+// eslint-disable-next-line no-invalid-regexp, no-useless-escape
+const PHONE_REGEXP = new RegExp(/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/);
+
 export {
   ALERT_SHOW_TIME,
   CURRENT_PIN_SETTINGS,
@@ -37,5 +40,6 @@ export {
   INPUT_ERR0R_CLASS,
   INPUT_ERROR_TEXT,
   CARD_INPUT_MAXLENGTH,
-  CARD_NUMBER_LENGTH
+  CARD_NUMBER_LENGTH,
+  PHONE_REGEXP
 };
