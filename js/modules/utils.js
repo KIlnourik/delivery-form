@@ -12,7 +12,7 @@ const showAlert = (message) => {
   alertContainer.style.fontSize = '50px';
   alertContainer.style.textAlign = 'center';
   alertContainer.style.verticalAlign = 'center';
-  alertContainer.style.backgroundColor = 'red';
+  alertContainer.style.backgroundColor = 'tomato';
   alertContainer.style.borderRadius = '10px';
   alertContainer.style.border = '2px black solid';
   alertContainer.style.boxShadow = '2px 3px';
@@ -83,6 +83,19 @@ const getFullCardNumber = (cardInputs) => {
 const setErrorClassToContainer = (contaier, validationResult) =>
   (!validationResult) ? contaier.classList.add(INPUT_ERR0R_CLASS) : contaier.classList.remove(INPUT_ERR0R_CLASS);
 
+const getEqualInObj = (value, obj) => {
+  for (const i in obj) {
+    if (i === value) {
+      return obj[i];
+    }
+  }
+};
+
+const getAddressFromMap = (coordinates) => {
+  const {lat, lng} = coordinates;
+  return `${lat.toFixed(6)},${lng.toFixed(6)}`;
+};
+
 export {
   showAlert,
   cityDataAdapter,
@@ -91,5 +104,7 @@ export {
   debounce,
   getCityCoordinates,
   getFullCardNumber,
-  setErrorClassToContainer
+  setErrorClassToContainer,
+  getEqualInObj,
+  getAddressFromMap
 };

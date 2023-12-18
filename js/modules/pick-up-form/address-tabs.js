@@ -1,6 +1,6 @@
 import { getData } from '../api.js';
 import { setActiveTab, adoptCitiesData, debounce } from '../utils.js';
-import { createСurrentAddressMarker } from './map.js';
+import { createСurrentAddressMarker, createAddressMarkers } from './map.js';
 import { RERENDER_DELAY } from '../const.js';
 
 const addressTemplate = document.querySelector('#address-template').content;
@@ -39,6 +39,8 @@ const onAddressTabClick = (evt) => {
 const renderDeliveryPoints = (currentTab) => {
   getData((cities) => {
     const adaptedCity = adoptCitiesData(cities).find((city) => city.cityId === currentTab);
+    createAddressMarkers(adaptedCity);
+
     const { deliveryPoints } = adaptedCity;
 
     if (!deliveryPoints) {
@@ -64,8 +66,9 @@ const renderDeliveryPoints = (currentTab) => {
     addressTabs.appendChild(deliveryPointsFragment);
 
     const renderedAddressTabs = addressTabs.querySelectorAll('input[name="address"]');
-    renderedAddressTabs[0].checked = true;
-    createСurrentAddressMarker(renderedAddressTabs[0].dataset.coordinates);
+    // renderedAddressTabs[0].checked = true;
+    // createСurrentAddressMarker(renderedAddressTabs[0].dataset.coordinates);
+
 
     renderedAddressTabs.forEach((tab) => tab.addEventListener('click', debounce(onAddressTabClick), RERENDER_DELAY));
   });
