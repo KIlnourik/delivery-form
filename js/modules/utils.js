@@ -96,6 +96,24 @@ const getAddressFromMap = (coordinates) => {
   return `${lat.toFixed(6)},${lng.toFixed(6)}`;
 };
 
+const cardFieldDisable = (value, cardFieldWrapper) => {
+  switch (value) {
+    case 'cash':
+      cardFieldWrapper.querySelectorAll('input').forEach((input) => input.setAttribute('disabled', 'disabled'));
+      cardFieldWrapper.classList.add('input-wrapper--hidden');
+      break;
+    case 'card':
+      cardFieldWrapper.querySelectorAll('input').forEach((input) => input.removeAttribute('disabled', 'disabled'));
+      cardFieldWrapper.classList.remove('input-wrapper--hidden');
+      break;
+  }
+};
+
+const payTabOnclickChange = (evt, cardFieldWrapper, payTabs) => {
+  setActiveTab(evt, payTabs);
+  cardFieldDisable(evt.target.value, cardFieldWrapper);
+};
+
 export {
   showAlert,
   cityDataAdapter,
@@ -106,5 +124,6 @@ export {
   getFullCardNumber,
   setErrorClassToContainer,
   getEqualInObj,
-  getAddressFromMap
+  getAddressFromMap,
+  payTabOnclickChange
 };

@@ -34,9 +34,16 @@ const INPUT_ERROR_TEXT = {
 const INPUT_ERR0R_CLASS = 'input-wrapper--error';
 const CARD_INPUT_MAXLENGTH = 4;
 const CARD_NUMBER_LENGTH = 16;
-
-// eslint-disable-next-line no-invalid-regexp, no-useless-escape
+// eslint-disable-next-line no-useless-escape
 const PHONE_REGEXP = new RegExp(/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/);
+const SUBMIT_HELPER_TIPS = {
+  address: 'адрес',
+  card: 'карта',
+  data: 'дата доставки',
+  phone: 'телефон',
+  time: 'время доставки'
+};
+
 
 export {
   ALERT_SHOW_TIME,
@@ -51,5 +58,6 @@ export {
   INPUT_ERROR_TEXT,
   CARD_INPUT_MAXLENGTH,
   CARD_NUMBER_LENGTH,
-  PHONE_REGEXP
+  PHONE_REGEXP,
+  SUBMIT_HELPER_TIPS
 };
