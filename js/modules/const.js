@@ -32,6 +32,7 @@ const INPUT_ERROR_TEXT = {
 };
 
 const INPUT_ERR0R_CLASS = 'input-wrapper--error';
+const INPUT_SUCCESS_CLASS = 'input-wrapper--success';
 const CARD_INPUT_MAXLENGTH = 4;
 const CARD_NUMBER_LENGTH = 16;
 // eslint-disable-next-line no-useless-escape
@@ -56,6 +57,7 @@ export {
   RERENDER_DELAY,
   INPUT_ERR0R_CLASS,
   INPUT_ERROR_TEXT,
+  INPUT_SUCCESS_CLASS,
   CARD_INPUT_MAXLENGTH,
   CARD_NUMBER_LENGTH,
   PHONE_REGEXP,

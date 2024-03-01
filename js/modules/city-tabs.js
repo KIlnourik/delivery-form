@@ -3,7 +3,6 @@ import { renderDeliveryPoints } from './pick-up-form/address-tabs.js';
 
 const cityTabs = document.querySelectorAll('input[name="city"]');
 
-
 document.querySelector('#pick-up-led').checked = true;
 let activeTab = 'led';
 

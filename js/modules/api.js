@@ -1,14 +1,14 @@
 import { showAlert } from './utils.js';
 
-const GET_URL = 'https://mock.pages.academy/delivery/db';
+const GET_URL = 'https://mock.htmlacademy.pro/delivery/db';
 
-const SEND_URL = 'https://mock.pages.academy/delivery/requests';
+const SEND_URL = 'https://mock.htmlacademy.pro/delivery/requests';
 
 const getData = (onSuccess) => {
   fetch(GET_URL)
     .then((response) => {
       if (response.ok) {
-        return response.json();
+        return(response.json());
       }
       throw new Error(`
       ${response.status}
@@ -23,12 +23,13 @@ const getData = (onSuccess) => {
     });
 };
 
-const sendData = (onSuccess, onFail, body) => {
+const sendData = (onSuccess, onFail, data) => {
   fetch(
     SEND_URL,
     {
       method: 'POST',
-      body,
+      body: JSON.stringify(data),
+      headers: new Headers({ 'Content-Type': 'application/json' })
     },
   )
     .then((response) => {

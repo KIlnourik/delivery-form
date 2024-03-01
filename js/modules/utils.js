@@ -1,4 +1,4 @@
-import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS } from './const.js';
+import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS } from './const.js';
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('p');
@@ -80,8 +80,14 @@ const getFullCardNumber = (cardInputs) => {
   }
 };
 
-const setErrorClassToContainer = (contaier, validationResult) =>
-  (!validationResult) ? contaier.classList.add(INPUT_ERR0R_CLASS) : contaier.classList.remove(INPUT_ERR0R_CLASS);
+const setErrorClassToContainer = (contaier, validationResult) => {
+  if (!validationResult) {
+    contaier.classList.add(INPUT_ERR0R_CLASS);
+  } else {
+    contaier.classList.remove(INPUT_ERR0R_CLASS);
+    contaier.classList.add(INPUT_SUCCESS_CLASS);
+  }
+};
 
 const getEqualInObj = (value, obj) => {
   for (const i in obj) {

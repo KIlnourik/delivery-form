@@ -1,12 +1,7 @@
 import { CARD_INPUT_MAXLENGTH} from '../const.js';
 import { getFullCardNumber, setErrorClassToContainer } from '../utils.js';
 
-const cardInputsContainer = document.querySelector('.card');
-const cardInputs = cardInputsContainer.querySelectorAll('input');
-
-cardInputs.forEach((input) => input.setAttribute('maxLength', CARD_INPUT_MAXLENGTH.toString()));
-
-const switchFocus = () => {
+const switchFocus = (cardInputs) => {
   for (let i = 0; i < cardInputs.length - 1; i++) {
     if (document.activeElement === cardInputs[i] &&
       cardInputs[i].value.length === CARD_INPUT_MAXLENGTH &&
@@ -40,7 +35,7 @@ const validateCardNumberMoonAlgorithm = (cardNumberValue) => {
   }
 };
 
-const validateCardNumber = () => {
+const validateCardNumber = (cardInputs, cardInputsContainer) => {
   const full = getFullCardNumber(cardInputs);
   const isValidCardNumber = validateCardNumberMoonAlgorithm(full);
   setErrorClassToContainer(cardInputsContainer, isValidCardNumber);
@@ -50,7 +45,4 @@ const validateCardNumber = () => {
   return full;
 };
 
-cardInputs.forEach((input) => input.addEventListener('input', () => {
-  switchFocus();
-  validateCardNumber();
-}));
+export {switchFocus, validateCardNumber};
