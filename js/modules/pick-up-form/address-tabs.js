@@ -67,6 +67,9 @@ const renderDeliveryPoints = (currentTab) => {
 
     const renderedAddressTabs = addressTabs.querySelectorAll('input[name="address"]');
 
+    renderedAddressTabs[0].checked = true;
+    createСurrentAddressMarker(renderedAddressTabs[0].dataset.coordinates);
+
     renderedAddressTabs.forEach((tab) => tab.addEventListener('click', debounce(onAddressTabClick), RERENDER_DELAY));
   });
 };

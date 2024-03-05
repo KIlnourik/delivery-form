@@ -45,6 +45,13 @@ const SUBMIT_HELPER_TIPS = {
   time: 'время доставки'
 };
 
+const PICK_UP_FORM_DATA = {
+  city: 'city',
+  address: 'address',
+  'payment-method': 'payment-method',
+  card: 'card',
+  phone: 'phone',
+};
 
 export {
   ALERT_SHOW_TIME,
@@ -61,5 +68,6 @@ export {
   CARD_INPUT_MAXLENGTH,
   CARD_NUMBER_LENGTH,
   PHONE_REGEXP,
-  SUBMIT_HELPER_TIPS
+  SUBMIT_HELPER_TIPS,
+  PICK_UP_FORM_DATA,
 };

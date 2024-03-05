@@ -1,4 +1,4 @@
-import { CARD_INPUT_MAXLENGTH} from '../const.js';
+import { CARD_INPUT_MAXLENGTH } from '../const.js';
 import { getFullCardNumber, setErrorClassToContainer } from '../utils.js';
 
 const switchFocus = (cardInputs) => {
@@ -8,6 +8,20 @@ const switchFocus = (cardInputs) => {
       !isNaN(Number(cardInputs[i].value))) {
       cardInputs[i].blur();
       cardInputs[i + 1].focus();
+    }
+  }
+};
+
+const switchFocusByKeyBackpace = (cardInputs, evt) => {
+  for (let i = 0; i < cardInputs.length - 1; i++) {
+    if (document.activeElement === cardInputs[i] && evt.key === 'Backspace' && !cardInputs[i].value.length) {
+      if (i === 0) {
+        cardInputs[i].focus();
+      } else {
+        cardInputs[i].blur();
+        cardInputs[i - 1].focus();
+        cardInputs[i - 1].value.slice(-1);
+      }
     }
   }
 };
@@ -40,9 +54,9 @@ const validateCardNumber = (cardInputs, cardInputsContainer) => {
   const isValidCardNumber = validateCardNumberMoonAlgorithm(full);
   setErrorClassToContainer(cardInputsContainer, isValidCardNumber);
   if (!isValidCardNumber) {
-    return null;
+    return false;
   }
-  return full;
+  return true;
 };
 
-export {switchFocus, validateCardNumber};
+export { switchFocus, switchFocusByKeyBackpace, validateCardNumber };

@@ -1,6 +1,6 @@
 import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS } from './const.js';
 
-const showAlert = (message) => {
+const showAlert = (message, backgroundColor='tomato') => {
   const alertContainer = document.createElement('p');
   alertContainer.style.zIndex = '1000';
   alertContainer.style.position = 'absolute';
@@ -12,7 +12,7 @@ const showAlert = (message) => {
   alertContainer.style.fontSize = '50px';
   alertContainer.style.textAlign = 'center';
   alertContainer.style.verticalAlign = 'center';
-  alertContainer.style.backgroundColor = 'tomato';
+  alertContainer.style.backgroundColor = backgroundColor;
   alertContainer.style.borderRadius = '10px';
   alertContainer.style.border = '2px black solid';
   alertContainer.style.boxShadow = '2px 3px';

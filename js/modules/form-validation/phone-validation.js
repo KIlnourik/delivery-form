@@ -23,10 +23,7 @@ const validatePhoneNumber = () => {
     return false;
   }
   setErrorClassToContainer(phoneInputWrapper, PHONE_REGEXP.test(phoneInput.value));
+  return true;
 };
 
-phoneInput.addEventListener('focus', onPhoneInputSetFocus);
-
-phoneInput.addEventListener('click', onPhoneInputSetFocus);
-
-phoneInput.addEventListener('change', validatePhoneNumber);
+export {onPhoneInputSetFocus, validatePhoneNumber};
