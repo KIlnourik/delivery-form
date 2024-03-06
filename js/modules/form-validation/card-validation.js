@@ -13,15 +13,14 @@ const switchFocus = (cardInputs) => {
 };
 
 const switchFocusByKeyBackpace = (cardInputs, evt) => {
-  for (let i = 0; i < cardInputs.length - 1; i++) {
-    if (document.activeElement === cardInputs[i] && evt.key === 'Backspace' && !cardInputs[i].value.length) {
-      if (i === 0) {
-        cardInputs[i].focus();
-      } else {
-        cardInputs[i].blur();
-        cardInputs[i - 1].focus();
-        cardInputs[i - 1].value.slice(-1);
-      }
+  for (let i = 0; i < cardInputs.length; i++) {
+    if (document.activeElement === cardInputs[i] &&
+      i !== 0 &&
+      evt.key === 'Backspace' &&
+      !cardInputs[i].value.length) {
+      cardInputs[i].blur();
+      cardInputs[i - 1].focus();
+      cardInputs[i - 1].value.slice(-1);
     }
   }
 };
