@@ -1,6 +1,6 @@
-import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS } from './const.js';
+import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS, SUBMIT_HELPER_TIPS } from './const.js';
 
-const showAlert = (message, backgroundColor='tomato') => {
+const showAlert = (message, backgroundColor = 'tomato') => {
   const alertContainer = document.createElement('p');
   alertContainer.style.zIndex = '1000';
   alertContainer.style.position = 'absolute';
@@ -98,7 +98,7 @@ const getEqualInObj = (value, obj) => {
 };
 
 const getAddressFromMap = (coordinates) => {
-  const {lat, lng} = coordinates;
+  const { lat, lng } = coordinates;
   return `${lat.toFixed(6)},${lng.toFixed(6)}`;
 };
 
@@ -120,6 +120,24 @@ const payTabOnclickChange = (evt, cardFieldWrapper, payTabs) => {
   cardFieldDisable(evt.target.value, cardFieldWrapper);
 };
 
+const getEmptyFormMessage = (helper, ...emptyForms) => {
+  if (helper.textContent !== '' && helper.hasChildNodes()) {
+    helper.querySelectorAll('span').forEach((item) => item.remove());
+    helper.textContent = '';
+  }
+  const emptyFormsFragment = document.createDocumentFragment();
+
+  for (let i = 0; i < emptyForms.length; i++) {
+    const emptyFormElementSpan = document.createElement('span');
+    emptyFormElementSpan.textContent = getEqualInObj(emptyForms[i], SUBMIT_HELPER_TIPS);
+    if (i > 0) {
+      emptyFormsFragment.append(' и ', emptyFormElementSpan);
+    }
+    emptyFormsFragment.append(emptyFormElementSpan);
+  }
+  helper.appendChild(emptyFormsFragment);
+};
+
 export {
   showAlert,
   cityDataAdapter,
@@ -131,5 +149,6 @@ export {
   setErrorClassToContainer,
   getEqualInObj,
   getAddressFromMap,
-  payTabOnclickChange
+  payTabOnclickChange,
+  getEmptyFormMessage
 };

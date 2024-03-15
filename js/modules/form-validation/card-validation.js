@@ -1,6 +1,7 @@
 import { CARD_INPUT_MAXLENGTH } from '../const.js';
 import { getFullCardNumber, setErrorClassToContainer } from '../utils.js';
 
+// Переключение фокуса при заполнении одной формы номера карты
 const switchFocus = (cardInputs) => {
   for (let i = 0; i < cardInputs.length - 1; i++) {
     if (document.activeElement === cardInputs[i] &&
@@ -12,6 +13,8 @@ const switchFocus = (cardInputs) => {
   }
 };
 
+// Функция реализующая переключение фокуса и удаление последней цифры предыдущего окна формы
+// при нажатии клавиши Backspace
 const switchFocusByKeyBackpace = (cardInputs, evt) => {
   for (let i = 0; i < cardInputs.length; i++) {
     if (document.activeElement === cardInputs[i] &&
@@ -25,6 +28,7 @@ const switchFocusByKeyBackpace = (cardInputs, evt) => {
   }
 };
 
+// Функция валидации номера карты по алгоритму Муна
 const validateCardNumberMoonAlgorithm = (cardNumberValue) => {
   if (cardNumberValue !== null) {
     let checksum = 0;
@@ -48,14 +52,11 @@ const validateCardNumberMoonAlgorithm = (cardNumberValue) => {
   }
 };
 
-const validateCardNumber = (cardInputs, cardInputsContainer) => {
+const isValidCardNumber = (cardInputs, cardInputsContainer) => {
   const full = getFullCardNumber(cardInputs);
-  const isValidCardNumber = validateCardNumberMoonAlgorithm(full);
-  setErrorClassToContainer(cardInputsContainer, isValidCardNumber);
-  if (!isValidCardNumber) {
-    return false;
-  }
-  return true;
+  const result = validateCardNumberMoonAlgorithm(full);
+  setErrorClassToContainer(cardInputsContainer, result);
+  return result;
 };
 
-export { switchFocus, switchFocusByKeyBackpace, validateCardNumber };
+export { switchFocus, switchFocusByKeyBackpace, isValidCardNumber };

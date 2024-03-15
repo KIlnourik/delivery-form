@@ -39,18 +39,10 @@ const CARD_NUMBER_LENGTH = 16;
 const PHONE_REGEXP = new RegExp(/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/);
 const SUBMIT_HELPER_TIPS = {
   address: 'адрес',
-  card: 'карта',
+  card: 'номер карты',
   data: 'дата доставки',
   phone: 'телефон',
   time: 'время доставки'
-};
-
-const PICK_UP_FORM_DATA = {
-  city: 'city',
-  address: 'address',
-  'payment-method': 'payment-method',
-  card: 'card',
-  phone: 'phone',
 };
 
 export {
@@ -69,5 +61,4 @@ export {
   CARD_NUMBER_LENGTH,
   PHONE_REGEXP,
   SUBMIT_HELPER_TIPS,
-  PICK_UP_FORM_DATA,
 };

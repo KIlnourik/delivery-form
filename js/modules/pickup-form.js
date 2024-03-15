@@ -1,7 +1,7 @@
-import { payTabOnclickChange, getFullCardNumber } from './utils.js';
-import { CARD_INPUT_MAXLENGTH, SUBMIT_HELPER_TIPS, PICK_UP_FORM_DATA } from './const.js';
-import { switchFocus, switchFocusByKeyBackpace, validateCardNumber } from './form-validation/card-validation.js';
-import { onPhoneInputSetFocus, validatePhoneNumber } from './form-validation/phone-validation.js';
+import { payTabOnclickChange, getFullCardNumber, getEmptyFormMessage } from './utils.js';
+import { CARD_INPUT_MAXLENGTH } from './const.js';
+import { switchFocus, switchFocusByKeyBackpace, isValidCardNumber } from './form-validation/card-validation.js';
+import { onPhoneInputSetFocus, isValidPhoneNumber } from './form-validation/phone-validation.js';
 
 const pickUpBlock = document.querySelector('.tabs-block__pick-up');
 const pickUpForm = pickUpBlock.querySelector('form');
@@ -10,39 +10,40 @@ const payTabs = payTabsWrapper.querySelectorAll('input');
 const cardInputField = pickUpBlock.querySelector('.card');
 const cardInputs = cardInputField.querySelectorAll('input');
 const phoneInput = pickUpForm.querySelector('input[type=tel]');
+const formStateBlock = pickUpBlock.querySelector('.form__submit-state');
+const submitHelper = formStateBlock.querySelector('.form__submit-help');
 const submitBtn = pickUpBlock.querySelector('.form__submit-btn');
-const submitHelper = pickUpBlock.querySelector('.form__submit-help');
 
 document.querySelector('#payment-card').checked = true;
-payTabs.forEach((tab) => tab.addEventListener('click', (evt) => payTabOnclickChange(evt, cardInputField, payTabs)));
+getEmptyFormMessage(submitHelper, phoneInput.name, 'card');
 
-const emptyFormTabs = [];
+payTabs.forEach((tab) => tab.addEventListener('click', (evt) => payTabOnclickChange(evt, cardInputField, payTabs)));
 
 cardInputs.forEach((input) => input.setAttribute('maxLength', CARD_INPUT_MAXLENGTH.toString()));
 cardInputs.forEach((input) => input.addEventListener('keydown', (evt) => switchFocusByKeyBackpace(cardInputs, evt)));
-cardInputs.forEach((input) => input.addEventListener('input', (evt) => {
-  switchFocus(cardInputs, evt);
-  validateCardNumber(cardInputs, cardInputField);
-}));
+cardInputs.forEach((input) => input.addEventListener('input', () => switchFocus(cardInputs)));
 
 phoneInput.addEventListener('focus', onPhoneInputSetFocus);
 phoneInput.addEventListener('click', onPhoneInputSetFocus);
-phoneInput.addEventListener('change', validatePhoneNumber);
 
-const getEmptyFormMessage = (emptyForms) => {
-  const emptyFormsFragment = document.createDocumentFragment();
-  emptyForms.forEach((form) => {
-    const emptyFormElement = document.createElement('span');
-    emptyFormElement.textContent = form;
-    emptyFormsFragment.appendChild(emptyFormElement);
-  });
-  submitHelper.appendChild(emptyFormsFragment);
+const getInvalidInputs = () => {
+  const invalidInputs = [];
+  if (!isValidPhoneNumber(phoneInput.value)) {invalidInputs.push(phoneInput.name);}
+  if (!isValidCardNumber(cardInputs, cardInputField)) {invalidInputs.push('card');}
+  return invalidInputs;
 };
 
-if (validateCardNumber(cardInputs, cardInputField) && validatePhoneNumber()) {
-  submitBtn.disabled = false;
-}
-
+pickUpForm.addEventListener('change', () => {
+  const invalidInputs = getInvalidInputs();
+  if (invalidInputs.length) {
+    formStateBlock.classList.remove('hidden');
+    getEmptyFormMessage(submitHelper, ...invalidInputs);
+    submitBtn.disabled = true;
+  } else {
+    formStateBlock.classList.add('hidden');
+    submitBtn.disabled = false;
+  }
+});
 
 pickUpForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
@@ -51,6 +52,4 @@ pickUpForm.addEventListener('submit', (evt) => {
     const fullCardNumber = getFullCardNumber(cardInputs);
     data.append('card', fullCardNumber);
   }
-
-  console.log(onFormSubmit(data));
 });

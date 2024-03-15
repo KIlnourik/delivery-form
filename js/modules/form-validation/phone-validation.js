@@ -1,4 +1,4 @@
-import { PHONE_REGEXP} from '../const.js';
+import { PHONE_REGEXP } from '../const.js';
 import { setErrorClassToContainer } from '../utils.js';
 
 const phoneInput = document.querySelector('#phone');
@@ -12,18 +12,18 @@ const addRussianCountryCode = () => {
 
 const onPhoneInputSetFocus = () => {
   addRussianCountryCode();
-  if (phoneInput.value === '+7'){
+  if (phoneInput.value === '+7') {
     phoneInput.setSelectionRange(2, 2);
   }
   phoneInput.setSelectionRange(phoneInput.value.length, phoneInput.value.length);
 };
 
-const validatePhoneNumber = () => {
-  if (!phoneInput.value.length) {
+const isValidPhoneNumber = (phoneInputValue) => {
+  if (!phoneInputValue.length) {
     return false;
   }
-  setErrorClassToContainer(phoneInputWrapper, PHONE_REGEXP.test(phoneInput.value));
-  return true;
+  setErrorClassToContainer(phoneInputWrapper, PHONE_REGEXP.test(phoneInputValue));
+  return PHONE_REGEXP.test(phoneInputValue);
 };
 
-export {onPhoneInputSetFocus, validatePhoneNumber};
+export { onPhoneInputSetFocus, isValidPhoneNumber };
