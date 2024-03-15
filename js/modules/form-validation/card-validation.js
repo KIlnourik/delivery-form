@@ -1,4 +1,4 @@
-import { CARD_INPUT_MAXLENGTH } from '../const.js';
+import { CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS } from '../const.js';
 import { getFullCardNumber, setErrorClassToContainer } from '../utils.js';
 
 // Переключение фокуса при заполнении одной формы номера карты
@@ -30,33 +30,34 @@ const switchFocusByKeyBackpace = (cardInputs, evt) => {
 
 // Функция валидации номера карты по алгоритму Муна
 const validateCardNumberMoonAlgorithm = (cardNumberValue) => {
-  if (cardNumberValue !== null) {
-    let checksum = 0;
-    const cardnumbers = cardNumberValue.split('').map(Number);
-    for (const [index, num] of cardnumbers.entries()) {
-      if (index % 2 === 0) {
-        const buffer = num * 2;
-        if (buffer > 9) {
-          checksum += buffer - 9;
-        } else {
-          (checksum += buffer);
-        }
-      }
-      else {
-        checksum += num;
+  let checksum = 0;
+  const cardnumbers = cardNumberValue.split('').map(Number);
+  for (const [index, num] of cardnumbers.entries()) {
+    if (index % 2 === 0) {
+      const buffer = num * 2;
+      if (buffer > 9) {
+        checksum += buffer - 9;
+      } else {
+        (checksum += buffer);
       }
     }
-    return checksum % 10 === 0;
-  } else {
-    return false;
+    else {
+      checksum += num;
+    }
   }
+  return checksum % 10 === 0;
 };
 
 const isValidCardNumber = (cardInputs, cardInputsContainer) => {
   const full = getFullCardNumber(cardInputs);
-  const result = validateCardNumberMoonAlgorithm(full);
-  setErrorClassToContainer(cardInputsContainer, result);
-  return result;
+  if (full !== null) {
+    const result = validateCardNumberMoonAlgorithm(full);
+    setErrorClassToContainer(cardInputsContainer, result);
+    return result;
+  }
+  cardInputsContainer.classList.remove(INPUT_ERR0R_CLASS);
+  cardInputsContainer.classList.remove(INPUT_SUCCESS_CLASS);
+  return false;
 };
 
 export { switchFocus, switchFocusByKeyBackpace, isValidCardNumber };

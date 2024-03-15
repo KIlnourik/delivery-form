@@ -66,26 +66,22 @@ const getCityCoordinates = (tab) => tab.dataset.coordinates.split(',');
 
 const getFullCardNumber = (cardInputs) => {
   const fullCardNumber = [];
-  for (let i = 0; i <= cardInputs.length - 1; i++) {
+  for (let i = 0; i < cardInputs.length; i++) {
     if (cardInputs[i].value.length === CARD_INPUT_MAXLENGTH &&
       !isNaN(Number(cardInputs[i].value))) {
       fullCardNumber.push(cardInputs[i].value);
     }
   }
   const completeCardNumber = fullCardNumber.join('');
-  if (completeCardNumber.length === CARD_NUMBER_LENGTH) {
-    return completeCardNumber;
-  } else {
-    return null;
-  }
+  return (completeCardNumber.length === CARD_NUMBER_LENGTH) ? completeCardNumber : null;
 };
 
-const setErrorClassToContainer = (contaier, validationResult) => {
+const setErrorClassToContainer = (container, validationResult) => {
   if (!validationResult) {
-    contaier.classList.add(INPUT_ERR0R_CLASS);
+    container.classList.add(INPUT_ERR0R_CLASS);
   } else {
-    contaier.classList.remove(INPUT_ERR0R_CLASS);
-    contaier.classList.add(INPUT_SUCCESS_CLASS);
+    container.classList.remove(INPUT_ERR0R_CLASS);
+    container.classList.add(INPUT_SUCCESS_CLASS);
   }
 };
 

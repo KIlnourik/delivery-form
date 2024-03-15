@@ -1,4 +1,4 @@
-import { PHONE_REGEXP } from '../const.js';
+import { PHONE_REGEXP, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS } from '../const.js';
 import { setErrorClassToContainer } from '../utils.js';
 
 const phoneInput = document.querySelector('#phone');
@@ -20,6 +20,8 @@ const onPhoneInputSetFocus = () => {
 
 const isValidPhoneNumber = (phoneInputValue) => {
   if (!phoneInputValue.length) {
+    phoneInputWrapper.classList.remove(INPUT_ERR0R_CLASS);
+    phoneInputWrapper.classList.remove(INPUT_SUCCESS_CLASS);
     return false;
   }
   setErrorClassToContainer(phoneInputWrapper, PHONE_REGEXP.test(phoneInputValue));
