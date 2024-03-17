@@ -45,6 +45,11 @@ const SUBMIT_HELPER_TIPS = {
   time: 'время доставки'
 };
 
+const SUCCESS_UPLOAD_MESSAGE = 'Заказ успешно оформлен';
+const SUCCESS_UPLOAD_COLOR = '#99FF99	';
+
+const FAIL_UPLOAD_MESSAGE = 'Не удалось оформить заказ. Что-то пошло не так.';
+
 export {
   ALERT_SHOW_TIME,
   CURRENT_PIN_SETTINGS,
@@ -61,4 +66,7 @@ export {
   CARD_NUMBER_LENGTH,
   PHONE_REGEXP,
   SUBMIT_HELPER_TIPS,
+  SUCCESS_UPLOAD_MESSAGE,
+  SUCCESS_UPLOAD_COLOR,
+  FAIL_UPLOAD_MESSAGE
 };

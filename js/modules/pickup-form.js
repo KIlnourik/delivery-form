@@ -1,7 +1,8 @@
-import { payTabOnclickChange, getFullCardNumber, getEmptyFormMessage } from './utils.js';
+import { payTabOnclickChange, getFullCardNumber, getEmptyFormMessage, showSuccessPopup, showFailPopup } from './utils.js';
 import { CARD_INPUT_MAXLENGTH } from './const.js';
 import { switchFocus, switchFocusByKeyBackpace, isValidCardNumber } from './form-validation/card-validation.js';
 import { onPhoneInputSetFocus, isValidPhoneNumber } from './form-validation/phone-validation.js';
+import { sendData } from './api.js';
 
 const pickUpBlock = document.querySelector('.tabs-block__pick-up');
 const pickUpForm = pickUpBlock.querySelector('form');
@@ -17,6 +18,24 @@ const submitBtn = pickUpBlock.querySelector('.form__submit-btn');
 document.querySelector('#payment-card').checked = true;
 getEmptyFormMessage(submitHelper, phoneInput.name, 'card');
 
+const getInvalidInputs = () => {
+  const invalidInputs = [];
+  if (!isValidPhoneNumber(phoneInput.value)) { invalidInputs.push(phoneInput.name); }
+  if (!isValidCardNumber(cardInputs, cardInputField)) { invalidInputs.push('card'); }
+  return invalidInputs;
+};
+
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+  const data = new FormData(evt.target);
+  if (data.get('payment-method') === 'card') {
+    const fullCardNumber = getFullCardNumber(cardInputs);
+    data.append('card', fullCardNumber);
+  }
+
+  sendData(showSuccessPopup, showFailPopup, data);
+};
+
 payTabs.forEach((tab) => tab.addEventListener('click', (evt) => payTabOnclickChange(evt, cardInputField, payTabs)));
 
 cardInputs.forEach((input) => input.setAttribute('maxLength', CARD_INPUT_MAXLENGTH.toString()));
@@ -25,13 +44,6 @@ cardInputs.forEach((input) => input.addEventListener('input', () => switchFocus(
 
 phoneInput.addEventListener('focus', onPhoneInputSetFocus);
 phoneInput.addEventListener('click', onPhoneInputSetFocus);
-
-const getInvalidInputs = () => {
-  const invalidInputs = [];
-  if (!isValidPhoneNumber(phoneInput.value)) {invalidInputs.push(phoneInput.name);}
-  if (!isValidCardNumber(cardInputs, cardInputField)) {invalidInputs.push('card');}
-  return invalidInputs;
-};
 
 pickUpForm.addEventListener('change', () => {
   const invalidInputs = getInvalidInputs();
@@ -45,11 +57,4 @@ pickUpForm.addEventListener('change', () => {
   }
 });
 
-pickUpForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const data = new FormData(evt.target);
-  if (data.get('payment-method') === 'card') {
-    const fullCardNumber = getFullCardNumber(cardInputs);
-    data.append('card', fullCardNumber);
-  }
-});
+pickUpForm.addEventListener('submit', onFormSubmit);

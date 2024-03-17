@@ -1,4 +1,4 @@
-import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS, SUBMIT_HELPER_TIPS } from './const.js';
+import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS, SUBMIT_HELPER_TIPS, SUCCESS_UPLOAD_COLOR, SUCCESS_UPLOAD_MESSAGE, FAIL_UPLOAD_MESSAGE } from './const.js';
 
 const showAlert = (message, backgroundColor = 'tomato') => {
   const alertContainer = document.createElement('p');
@@ -6,10 +6,11 @@ const showAlert = (message, backgroundColor = 'tomato') => {
   alertContainer.style.position = 'absolute';
   alertContainer.style.left = '50%';
   alertContainer.style.top = '50%';
-  alertContainer.style.width = '1000px';
+  alertContainer.style.width = '60vw';
   alertContainer.style.transform = 'translate(-50%, -50%)';
   alertContainer.style.padding = '40px 20px';
-  alertContainer.style.fontSize = '50px';
+  alertContainer.style.fontSize = '40px';
+  alertContainer.style.lineHeight = '1.2';
   alertContainer.style.textAlign = 'center';
   alertContainer.style.verticalAlign = 'center';
   alertContainer.style.backgroundColor = backgroundColor;
@@ -134,6 +135,14 @@ const getEmptyFormMessage = (helper, ...emptyForms) => {
   helper.appendChild(emptyFormsFragment);
 };
 
+const showSuccessPopup = () => {
+  showAlert(SUCCESS_UPLOAD_MESSAGE, SUCCESS_UPLOAD_COLOR);
+};
+
+const showFailPopup = () => {
+  showAlert(FAIL_UPLOAD_MESSAGE);
+};
+
 export {
   showAlert,
   cityDataAdapter,
@@ -146,5 +155,7 @@ export {
   getEqualInObj,
   getAddressFromMap,
   payTabOnclickChange,
-  getEmptyFormMessage
+  getEmptyFormMessage,
+  showSuccessPopup,
+  showFailPopup
 };
