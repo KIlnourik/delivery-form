@@ -4,12 +4,14 @@ import { setErrorClassToContainer } from '../utils.js';
 const phoneInput = document.querySelector('#phone');
 const phoneInputWrapper = document.querySelector('.phone');
 
+// Добавляет в поле номера телефона +7
 const addRussianCountryCode = () => {
   if (document.activeElement === phoneInput && phoneInput.value === '') {
     phoneInput.value = '+7';
   }
 };
 
+// При фокусе на поле номера телефона проставляет +7 и устанавливает курсор в конец поля формы
 const onPhoneInputSetFocus = () => {
   addRussianCountryCode();
   if (phoneInput.value === '+7') {
@@ -18,6 +20,7 @@ const onPhoneInputSetFocus = () => {
   phoneInput.setSelectionRange(phoneInput.value.length, phoneInput.value.length);
 };
 
+// Проверяет валидность номера телефона и устанавливает соотвествующий стиль полю формы
 const isValidPhoneNumber = (phoneInputValue) => {
   if (!phoneInputValue.length) {
     phoneInputWrapper.classList.remove(INPUT_ERR0R_CLASS);

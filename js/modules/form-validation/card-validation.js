@@ -48,6 +48,7 @@ const validateCardNumberMoonAlgorithm = (cardNumberValue) => {
   return checksum % 10 === 0;
 };
 
+// Функция проверяет валидность введенного номера карты и устанавливает соответствующий стиль полю формы
 const isValidCardNumber = (cardInputs, cardInputsContainer) => {
   const full = getFullCardNumber(cardInputs);
   if (full !== null) {
