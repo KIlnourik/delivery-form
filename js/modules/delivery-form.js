@@ -1,4 +1,4 @@
-import { payTabOnclickChange, getFullCardNumber, getEmptyFormMessage, showSuccessPopup, showFailPopup, validateByRegExp, onPhoneInputSetFocus, formateDateInput } from './utils.js';
+import { payTabOnclickChange, getFullCardNumber, getEmptyFormMessage, showSuccessPopup, showFailPopup, validateByRegExp, onPhoneInputSetFocus } from './utils.js';
 import { CARD_INPUT_MAXLENGTH, ADDRESS_REGEXP, PHONE_REGEXP } from './const.js';
 import { isDateValid } from './form-validation/date-validation.js';
 import { switchFocus, switchFocusByKeyBackpace, isValidCardNumber } from './form-validation/card-validation.js';
@@ -27,7 +27,7 @@ getEmptyFormMessage(submitHelper, addressInput.name, phoneInput.name, 'card');
 const getInvalidInputs = () => {
   const invalidInputs = [];
   if (!validateByRegExp(ADDRESS_REGEXP, addressInput.value, addressInputWrapper)) { invalidInputs.push(addressInput.name); }
-  // if (!isDateValid(dateInput, dateInputWrapper)) { invalidInputs.push(dateInput.name); }
+  if (!isDateValid(dateInput, dateInputWrapper)) { invalidInputs.push(dateInput.name); }
   if (!validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInputWrapper)) { invalidInputs.push(phoneInput.name); }
   if (!isValidCardNumber(cardInputs, cardInputField)) { invalidInputs.push('card'); }
   return invalidInputs;
@@ -43,11 +43,6 @@ const onFormSubmit = (evt) => {
 
   sendData(showSuccessPopup, showFailPopup, data);
 };
-
-dateInput.addEventListener('change', () => {
-  // formateDateInput(dateInput);
-  isDateValid(dateInput, dateInputWrapper);
-});
 
 payTabs.forEach((tab) => tab.addEventListener('click', (evt) => payTabOnclickChange(evt, cardInputField, payTabs)));
 

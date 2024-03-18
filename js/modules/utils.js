@@ -165,13 +165,6 @@ const onPhoneInputSetFocus = (phoneInput) => {
   phoneInput.setSelectionRange(phoneInput.value.length, phoneInput.value.length);
 };
 
-const formateDateInput = (dateInput) => {
-  dateInput.setAttribute('maxLength', 10);
-  if (dateInput.value.length && (dateInput.value.length === 2 || dateInput.value.length === 5)) {
-    dateInput.value += '/';
-  }
-};
-
 export {
   showAlert,
   cityDataAdapter,
@@ -189,5 +182,4 @@ export {
   showFailPopup,
   validateByRegExp,
   onPhoneInputSetFocus,
-  formateDateInput
 };

@@ -50,6 +50,7 @@ const SUCCESS_UPLOAD_MESSAGE = 'Заказ успешно оформлен';
 const SUCCESS_UPLOAD_COLOR = '#99FF99	';
 
 const FAIL_UPLOAD_MESSAGE = 'Не удалось оформить заказ. Что-то пошло не так.';
+const DATE_MASK = 'DD/MM/YYYY';
 
 export {
   ALERT_SHOW_TIME,
@@ -70,5 +71,6 @@ export {
   SUBMIT_HELPER_TIPS,
   SUCCESS_UPLOAD_MESSAGE,
   SUCCESS_UPLOAD_COLOR,
-  FAIL_UPLOAD_MESSAGE
+  FAIL_UPLOAD_MESSAGE,
+  DATE_MASK
 };

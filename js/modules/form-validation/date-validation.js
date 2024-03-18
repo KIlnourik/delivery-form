@@ -1,9 +1,10 @@
-import dayjs from 'dayjs';
-import 'dayjs/locale/ru';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS } from '../const.js';
+import dayjs from 'https://cdn.skypack.dev/dayjs@1.11.10';
+import 'https://cdn.skypack.dev/dayjs@1.11.10/locale/ru';
+import customParseFormat from 'https://cdn.skypack.dev/dayjs@1.11.10/plugin/customParseFormat';
+import { INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS, DATE_MASK } from '../const.js';
+import { setStatusClassToContainer } from '../utils.js';
 
-const DATE_MASK = 'DD/MM/YYYY';
+
 dayjs.locale('ru');
 dayjs.extend(customParseFormat);
 
@@ -13,20 +14,15 @@ const isDateValid = (dateInput, dateInputWrapper) => {
     dateInputWrapper.classList.remove(INPUT_SUCCESS_CLASS);
     return false;
   }
-  const date = dayjs(dateInput.value, 'DD/MM/YYYY', 'ru');
+  const date = dayjs(dateInput.value, DATE_MASK, 'ru');
   const now = dayjs().locale('ru');
   const period = now.add(1, 'week');
-  if (date.isValid()) {
-    // console.log('HYI');
-    // console.log(now >= date);
+  if (date.isValid() && date >= now && date <= period) {
+    setStatusClassToContainer(dateInputWrapper, true);
+    return true;
   }
-  console.log(dateInput.value);
-  console.log(date);
-  console.log(dayjs.locale());
-  console.log(date.format('DD/MM/YYYY'));
-  // console.log('NIHYI');
-  // console.log(now.format('DD/MM/YYYY'));
-  // console.log(period.format('DD/MM/YYYY'));
+  setStatusClassToContainer(dateInputWrapper, false);
+  return false;
 };
 
 export { isDateValid };
