@@ -42,8 +42,8 @@ cardInputs.forEach((input) => input.setAttribute('maxLength', CARD_INPUT_MAXLENG
 cardInputs.forEach((input) => input.addEventListener('keydown', (evt) => switchFocusByKeyBackpace(cardInputs, evt)));
 cardInputs.forEach((input) => input.addEventListener('input', () => switchFocus(cardInputs)));
 
-phoneInput.addEventListener('focus', onPhoneInputSetFocus(phoneInput));
-phoneInput.addEventListener('click', onPhoneInputSetFocus(phoneInput));
+phoneInput.addEventListener('focus', () => onPhoneInputSetFocus(phoneInput));
+phoneInput.addEventListener('click', () => onPhoneInputSetFocus(phoneInput));
 
 pickUpForm.addEventListener('input', () => {
   const invalidInputs = getInvalidInputs();

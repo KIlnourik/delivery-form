@@ -1,5 +1,5 @@
 import { CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS } from '../const.js';
-import { getFullCardNumber, setErrorClassToContainer } from '../utils.js';
+import { getFullCardNumber, setStatusClassToContainer } from '../utils.js';
 
 // Переключение фокуса при заполнении одной формы номера карты
 const switchFocus = (cardInputs) => {
@@ -53,7 +53,7 @@ const isValidCardNumber = (cardInputs, cardInputsContainer) => {
   const full = getFullCardNumber(cardInputs);
   if (full !== null) {
     const result = validateCardNumberMoonAlgorithm(full);
-    setErrorClassToContainer(cardInputsContainer, result);
+    setStatusClassToContainer(cardInputsContainer, result);
     return result;
   }
   cardInputsContainer.classList.remove(INPUT_ERR0R_CLASS);

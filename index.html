@@ -115,15 +115,15 @@
               </div>
               <div class="input-wrapper input-wrapper--input">
                 <h4>Адрес</h4>
-                <input id="delivery-address" type="text" required />
+                <input id="delivery-address" name="address" type="text" required />
                 <label for="delivery-address" aria-label="Укажите адрес"></label>
                 <div class="input-wrapper__error">Укажите адрес</div>
               </div>
               <div class="input-wrapper input-wrapper--input">
                 <h4>Дата доставки</h4>
-                <input id="delivery-user-date-delivery" type="text" required />
+                <input id="delivery-user-date-delivery" name="date" type="text" placeholder="ДД/ММ/ГГГГ" required />
                 <label for="delivery-user-date-delivery" aria-label="Укажите дату доставки"></label>
-                <div class="input-wrapper__error">Укажите дату доставки</div>
+                <div class="input-wrapper__error">Укажите дату доставки в формате ДД/ММ/ГГГГ</div>
               </div>
               <div class="input-wrapper input-wrapper--range">
                 <h4>Время доставки</h4>
@@ -191,14 +191,20 @@
   </div>
 
   <template id="address-template">
-    <input id="pick-up-address" type="radio" name="address" value="Ленина, 10"/>
+    <input id="pick-up-address" type="radio" name="address" value="Ленина, 10" />
     <label id="address-label" for="pick-up-address-1">Ленина, 10</label>
   </template>
 
-  <template>
-
-  </template>
-
+  <script type="importmap">
+    {
+      "imports": {
+        "dayjs": "https://cdn.skypack.dev/dayjs@1.11.10",
+        "dayjs/locale/ru": "https://cdn.skypack.dev/dayjs@1.11.10",
+        "dayjs/plugin/customParseFormat": "https://cdn.skypack.dev/dayjs@1.11.10"
+      }
+    }
+  </script>
+  <!-- <script src="https://cdn.skypack.dev/dayjs@1.11.10"></script> -->
   <script src="./leaflet/leaflet.js"></script>
   <script src="./js/main.js" type="module"></script>
 

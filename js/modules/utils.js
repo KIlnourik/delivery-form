@@ -77,7 +77,7 @@ const getFullCardNumber = (cardInputs) => {
   return (completeCardNumber.length === CARD_NUMBER_LENGTH) ? completeCardNumber : null;
 };
 
-const setErrorClassToContainer = (container, validationResult) => {
+const setStatusClassToContainer = (container, validationResult) => {
   if (!validationResult) {
     container.classList.add(INPUT_ERR0R_CLASS);
   } else {
@@ -149,24 +149,27 @@ const validateByRegExp = (regexp, value, wrapper) => {
     wrapper.classList.remove(INPUT_SUCCESS_CLASS);
     return false;
   }
-  setErrorClassToContainer(wrapper, regexp.test(value));
+  setStatusClassToContainer(wrapper, regexp.test(value));
   return regexp.test(value);
-};
-
-// Добавляет в поле номера телефона +7
-const addRussianCountryCode = (phoneInput) => {
-  if (document.activeElement === phoneInput && phoneInput.value === '') {
-    phoneInput.value = '+7';
-  }
 };
 
 // При фокусе на поле номера телефона проставляет +7 и устанавливает курсор в конец поля формы
 const onPhoneInputSetFocus = (phoneInput) => {
-  addRussianCountryCode();
+  if (document.activeElement === phoneInput && !phoneInput.value.length) {
+    phoneInput.value = '+7';
+  }
+
   if (phoneInput.value === '+7') {
     phoneInput.setSelectionRange(2, 2);
   }
   phoneInput.setSelectionRange(phoneInput.value.length, phoneInput.value.length);
+};
+
+const formateDateInput = (dateInput) => {
+  dateInput.setAttribute('maxLength', 10);
+  if (dateInput.value.length && (dateInput.value.length === 2 || dateInput.value.length === 5)) {
+    dateInput.value += '/';
+  }
 };
 
 export {
@@ -177,7 +180,7 @@ export {
   debounce,
   getCityCoordinates,
   getFullCardNumber,
-  setErrorClassToContainer,
+  setStatusClassToContainer,
   getEqualInObj,
   getAddressFromMap,
   payTabOnclickChange,
@@ -185,5 +188,6 @@ export {
   showSuccessPopup,
   showFailPopup,
   validateByRegExp,
-  onPhoneInputSetFocus
+  onPhoneInputSetFocus,
+  formateDateInput
 };
