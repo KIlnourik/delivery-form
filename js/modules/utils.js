@@ -143,6 +143,32 @@ const showFailPopup = () => {
   showAlert(FAIL_UPLOAD_MESSAGE);
 };
 
+const validateByRegExp = (regexp, value, wrapper) => {
+  if (!value.length) {
+    wrapper.classList.remove(INPUT_ERR0R_CLASS);
+    wrapper.classList.remove(INPUT_SUCCESS_CLASS);
+    return false;
+  }
+  setErrorClassToContainer(wrapper, regexp.test(value));
+  return regexp.test(value);
+};
+
+// Добавляет в поле номера телефона +7
+const addRussianCountryCode = (phoneInput) => {
+  if (document.activeElement === phoneInput && phoneInput.value === '') {
+    phoneInput.value = '+7';
+  }
+};
+
+// При фокусе на поле номера телефона проставляет +7 и устанавливает курсор в конец поля формы
+const onPhoneInputSetFocus = (phoneInput) => {
+  addRussianCountryCode();
+  if (phoneInput.value === '+7') {
+    phoneInput.setSelectionRange(2, 2);
+  }
+  phoneInput.setSelectionRange(phoneInput.value.length, phoneInput.value.length);
+};
+
 export {
   showAlert,
   cityDataAdapter,
@@ -157,5 +183,7 @@ export {
   payTabOnclickChange,
   getEmptyFormMessage,
   showSuccessPopup,
-  showFailPopup
+  showFailPopup,
+  validateByRegExp,
+  onPhoneInputSetFocus
 };

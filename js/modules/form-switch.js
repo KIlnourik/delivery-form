@@ -2,17 +2,17 @@ const deliveryForm = document.querySelector('.tabs-block__item-delivery');
 const pickUpFrom = document.querySelector('.tabs-block__pick-up');
 const deliveryTabs = document.querySelectorAll('.tab');
 
-deliveryForm.style.display = 'none';
+deliveryForm.classList.add('hidden');
 
 const formDisabler = (tabData) => {
   switch (tabData) {
     case 'pickup':
-      deliveryForm.style.display = 'none';
-      pickUpFrom.style.display = 'block';
+      deliveryForm.classList.add('hidden');
+      pickUpFrom.classList.remove('hidden');
       break;
     case 'delivery':
-      pickUpFrom.style.display = 'none';
-      deliveryForm.style.display = 'block';
+      pickUpFrom.classList.add('hidden');
+      deliveryForm.classList.remove('hidden');
       break;
   }
 };
