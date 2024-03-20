@@ -22,7 +22,7 @@ const submitBtn = deliveryBlock.querySelector('.form__submit-btn');
 
 deliveryBlock.querySelector('#payment-card').checked = true;
 submitBtn.disabled = true;
-getEmptyFormMessage(submitHelper, addressInput.name, phoneInput.name, 'card');
+getEmptyFormMessage(submitHelper, addressInput.name, dateInput.name, phoneInput.name, 'card');
 
 const getInvalidInputs = () => {
   const invalidInputs = [];

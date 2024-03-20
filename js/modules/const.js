@@ -41,7 +41,7 @@ const ADDRESS_REGEXP = new RegExp(/^[ул|пер|пр|б-р]*[.\s]*[А-Яа-я-]
 const SUBMIT_HELPER_TIPS = {
   address: 'адрес',
   card: 'номер карты',
-  data: 'дата доставки',
+  date: 'дата доставки',
   phone: 'телефон',
   time: 'время доставки'
 };

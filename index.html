@@ -10,7 +10,8 @@
   <link rel="preload" href="./fonts/Montserrat-Medium.woff2" as="font" crossorigin="anonymous" />
   <link rel="preload" href="./fonts/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous" />
   <link rel="preload" href="./fonts/Montserrat-Bold.woff2" as="font" crossorigin="anonymous" />
-  <link rel="stylesheet" href="./leaflet/leaflet.css">
+  <link rel="stylesheet" href="./libs/nouislider/dist/nouislider.min.css">
+  <link rel="stylesheet" href="./libs/leaflet/leaflet.css">
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 
@@ -127,18 +128,10 @@
               </div>
               <div class="input-wrapper input-wrapper--range">
                 <h4>Время доставки</h4>
-                <input id="delivery-user-time-delivery" type="range" class="hidden" data-field-type="delivery" />
+                <input id="delivery-user-time-delivery" type="hidden" class="hidden" data-field-type="delivery" />
                 <label for="delivery-user-time-delivery" aria-label="Укажите время доставки"></label>
-                <div class="range-slider">
-                  <div class="range-slider-thumb-area js_range-slider-thumb-area">
-                    <div class="range-slider-thumb js_range-slider-thumb" tabindex="2">
-                      <div class="range-slider-tooltip">
-                        10:00 - 12:00
-                      </div>
-                      <div class="range-slider-thumb__stripe"></div>
-                      <div class="range-slider-thumb__stripe"></div>
-                      <div class="range-slider-thumb__stripe"></div>
-                    </div>
+                <div class="range-slider__wrapper">
+                  <div class="range-slider">
                   </div>
                   <div class="range-slider-tips">
                     <div class="range-slider-tip">10:00</div>
@@ -204,8 +197,8 @@
       }
     }
   </script>
-  <!-- <script src="https://cdn.skypack.dev/dayjs@1.11.10"></script> -->
-  <script src="./leaflet/leaflet.js"></script>
+  <script src="./libs/nouislider/dist/nouislider.min.js"></script>
+  <script src="./libs/leaflet/leaflet.js"></script>
   <script src="./js/main.js" type="module"></script>
 
 </body>

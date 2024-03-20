@@ -17,12 +17,8 @@ const isDateValid = (dateInput, dateInputWrapper) => {
   const date = dayjs(dateInput.value, DATE_MASK, 'ru');
   const now = dayjs().locale('ru');
   const period = now.add(1, 'week');
-  if (date.isValid() && date >= now && date <= period) {
-    setStatusClassToContainer(dateInputWrapper, true);
-    return true;
-  }
-  setStatusClassToContainer(dateInputWrapper, false);
-  return false;
+  setStatusClassToContainer(dateInputWrapper, date.isValid() && date >= now && date <= period);
+  return date.isValid() && date >= now && date <= period;
 };
 
 export { isDateValid };

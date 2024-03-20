@@ -1,17 +1,17 @@
 const deliveryForm = document.querySelector('.tabs-block__item-delivery');
-const pickUpFrom = document.querySelector('.tabs-block__pick-up');
+const pickUpForm = document.querySelector('.tabs-block__pick-up');
 const deliveryTabs = document.querySelectorAll('.tab');
 
-deliveryForm.classList.add('hidden');
+pickUpForm.classList.add('hidden');
 
 const formDisabler = (tabData) => {
   switch (tabData) {
     case 'pickup':
       deliveryForm.classList.add('hidden');
-      pickUpFrom.classList.remove('hidden');
+      pickUpForm.classList.remove('hidden');
       break;
     case 'delivery':
-      pickUpFrom.classList.add('hidden');
+      pickUpForm.classList.add('hidden');
       deliveryForm.classList.remove('hidden');
       break;
   }
