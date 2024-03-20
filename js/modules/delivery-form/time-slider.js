@@ -35,6 +35,11 @@ const format = {
   }
 };
 
+const setDeliveryTimeInterval = (value) => {
+  const secondValues = value.split(':');
+  return `${value}-${Number(secondValues[0]) + 2}:${secondValues[1]}`;
+};
+
 noUiSlider.create(rangeSlider, {
   start: initialStartMinute,
   range: {
@@ -43,12 +48,15 @@ noUiSlider.create(rangeSlider, {
   },
   step: step,
   format: format,
-  tooltips: true,
+  tooltips:
+  {
+    to: function (value) {
+      return setDeliveryTimeInterval(formatHoursAndMinutes(value));
+    }
+  }
+  ,
 });
 
-const setDeliveryTime = (values) => {
-  const secondValues = values[0].split(':');
-  rangeSliderInput.value = `${values[0]}-${Number(secondValues[0]) + 2}:${secondValues[1]}`;
-};
-
-rangeSlider.noUiSlider.on('update', (values) => setDeliveryTime(values));
+rangeSlider.noUiSlider.on('update', (values) => {
+  rangeSliderInput.value = setDeliveryTimeInterval(values[0]);
+});
