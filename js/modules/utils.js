@@ -1,4 +1,5 @@
 import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS, SUBMIT_HELPER_TIPS, SUCCESS_UPLOAD_COLOR, SUCCESS_UPLOAD_MESSAGE, FAIL_UPLOAD_MESSAGE } from './const.js';
+import { sendData } from './api.js';
 
 const showAlert = (message, backgroundColor = 'tomato') => {
   const alertContainer = document.createElement('p');
@@ -153,16 +154,34 @@ const validateByRegExp = (regexp, value, wrapper) => {
   return regexp.test(value);
 };
 
-// При фокусе на поле номера телефона проставляет +7 и устанавливает курсор в конец поля формы
-const onPhoneInputSetFocus = (phoneInput) => {
-  if (document.activeElement === phoneInput && !phoneInput.value.length) {
-    phoneInput.value = '+7';
+const getInvalidInputs = (formFieldsValidateFunction) => {
+  const invalidInputs = [];
+  for (const [key, value] of formFieldsValidateFunction) {
+    if (!value) { invalidInputs.push(key);}
   }
+  return invalidInputs;
+};
 
-  if (phoneInput.value === '+7') {
-    phoneInput.setSelectionRange(2, 2);
+const onInputFormValidate = (submitBtn, submitHelper, formStateBlock, formFieldsValidateFunction) => {
+  const invalidInputs = getInvalidInputs(formFieldsValidateFunction);
+  if (invalidInputs.length) {
+    formStateBlock.classList.remove('hidden');
+    getEmptyFormMessage(submitHelper, ...invalidInputs);
+    submitBtn.disabled = true;
+  } else {
+    formStateBlock.classList.add('hidden');
+    submitBtn.disabled = false;
   }
-  phoneInput.setSelectionRange(phoneInput.value.length, phoneInput.value.length);
+};
+
+const onFormSubmit = (evt, cardInputs) => {
+  evt.preventDefault();
+  const data = new FormData(evt.target);
+  if (data.get('payment-method') === 'card') {
+    const fullCardNumber = getFullCardNumber(cardInputs);
+    data.append('card', fullCardNumber);
+  }
+  sendData(showSuccessPopup, showFailPopup, data);
 };
 
 export {
@@ -181,5 +200,7 @@ export {
   showSuccessPopup,
   showFailPopup,
   validateByRegExp,
-  onPhoneInputSetFocus,
+  getInvalidInputs,
+  onInputFormValidate,
+  onFormSubmit
 };

@@ -61,4 +61,10 @@ const isValidCardNumber = (cardInputs, cardInputsContainer) => {
   return false;
 };
 
-export { switchFocus, switchFocusByKeyBackpace, isValidCardNumber };
+const setEventListenersToCardField = (cardInputs) => {
+  cardInputs.forEach((input) => input.setAttribute('maxLength', CARD_INPUT_MAXLENGTH.toString()));
+  cardInputs.forEach((input) => input.addEventListener('keydown', (evt) => switchFocusByKeyBackpace(cardInputs, evt)));
+  cardInputs.forEach((input) => input.addEventListener('input', () => switchFocus(cardInputs)));
+};
+
+export { setEventListenersToCardField, isValidCardNumber };
