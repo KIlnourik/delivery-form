@@ -19,10 +19,13 @@ const phoneInputWrapper = phoneInput.closest('div');
 const formStateBlock = deliveryBlock.querySelector('.form__submit-state');
 const submitHelper = formStateBlock.querySelector('.form__submit-help');
 const submitBtn = deliveryBlock.querySelector('.form__submit-btn');
+const timeIntervalInput = deliveryBlock.querySelector('#delivery-user-date-delivery');
 
 deliveryBlock.querySelector('#payment-card').checked = true;
 submitBtn.disabled = true;
 getEmptyFormMessage(submitHelper, addressInput.name, dateInput.name, phoneInput.name, 'card');
+
+const formInputs = [addressInput, dateInput, phoneInput, timeIntervalInput];
 
 payTabs.forEach((tab) => tab.addEventListener('click', (evt) => payTabOnclickChange(evt, cardInputField, payTabs)));
 
@@ -40,4 +43,4 @@ deliveryForm.addEventListener('input', () => {
   onInputFormValidate(submitBtn, submitHelper, formStateBlock, formFieldsValidateFunction);
 });
 
-deliveryForm.addEventListener('submit', (evt) => onFormSubmit(evt, cardInputs));
+deliveryForm.addEventListener('submit', (evt) => onFormSubmit(evt, submitBtn, cardInputs, formInputs));

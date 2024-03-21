@@ -60,3 +60,7 @@ noUiSlider.create(rangeSlider, {
 rangeSlider.noUiSlider.on('update', (values) => {
   rangeSliderInput.value = setDeliveryTimeInterval(values[0]);
 });
+
+const resetSlider = () => {rangeSlider.noUiSlider.reset();};
+
+export {resetSlider};

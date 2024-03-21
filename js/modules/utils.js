@@ -1,5 +1,6 @@
 import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS, SUBMIT_HELPER_TIPS, SUCCESS_UPLOAD_COLOR, SUCCESS_UPLOAD_MESSAGE, FAIL_UPLOAD_MESSAGE } from './const.js';
 import { sendData } from './api.js';
+import { resetSlider } from './delivery-form/time-slider.js';
 
 const showAlert = (message, backgroundColor = 'tomato') => {
   const alertContainer = document.createElement('p');
@@ -136,12 +137,12 @@ const getEmptyFormMessage = (helper, ...emptyForms) => {
   helper.appendChild(emptyFormsFragment);
 };
 
-const showSuccessPopup = () => {
-  showAlert(SUCCESS_UPLOAD_MESSAGE, SUCCESS_UPLOAD_COLOR);
+const onSuccess = () => {
+
 };
 
-const showFailPopup = () => {
-  showAlert(FAIL_UPLOAD_MESSAGE);
+const onFail = () => {
+
 };
 
 const validateByRegExp = (regexp, value, wrapper) => {
@@ -157,7 +158,7 @@ const validateByRegExp = (regexp, value, wrapper) => {
 const getInvalidInputs = (formFieldsValidateFunction) => {
   const invalidInputs = [];
   for (const [key, value] of formFieldsValidateFunction) {
-    if (!value) { invalidInputs.push(key);}
+    if (!value) { invalidInputs.push(key); }
   }
   return invalidInputs;
 };
@@ -174,14 +175,42 @@ const onInputFormValidate = (submitBtn, submitHelper, formStateBlock, formFields
   }
 };
 
-const onFormSubmit = (evt, cardInputs) => {
+const resetCardInput = (cardInputs) => cardInputs.forEach((input) => {
+  input.value = '';
+  input.closest('div').classList.remove(INPUT_SUCCESS_CLASS);
+});
+
+const formReset = (cardInputs, formInputs) => {
+  for (const input of formInputs) {
+    if (input.name === 'time-interval') { input.value = '10:00-12:00'; }
+    input.value = '';
+    input.closest('div').classList.remove(INPUT_SUCCESS_CLASS);
+  }
+  resetCardInput(cardInputs);
+};
+
+const onFormSubmit = (evt, submitBtn, cardInputs, formInputs) => {
   evt.preventDefault();
   const data = new FormData(evt.target);
   if (data.get('payment-method') === 'card') {
     const fullCardNumber = getFullCardNumber(cardInputs);
     data.append('card', fullCardNumber);
   }
-  sendData(showSuccessPopup, showFailPopup, data);
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Отправка...';
+  sendData(
+    () => {
+      formReset(cardInputs, formInputs);
+      resetSlider();
+      showAlert(SUCCESS_UPLOAD_MESSAGE, SUCCESS_UPLOAD_COLOR);
+      submitBtn.textContent = 'Заказать';
+    },
+    () => {
+      showAlert(FAIL_UPLOAD_MESSAGE);
+      submitBtn.textContent = 'Заказать';
+      submitBtn.disabled = false;
+    },
+    data);
 };
 
 export {
@@ -197,8 +226,8 @@ export {
   getAddressFromMap,
   payTabOnclickChange,
   getEmptyFormMessage,
-  showSuccessPopup,
-  showFailPopup,
+  onSuccess,
+  onFail,
   validateByRegExp,
   getInvalidInputs,
   onInputFormValidate,
