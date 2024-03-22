@@ -1,12 +1,10 @@
-import { payTabOnclickChange, getEmptyFormMessage, validateByRegExp, onInputFormValidate, onFormSubmit } from './utils.js';
+import {  getEmptyFormMessage, validateByRegExp, onInputFormValidate, onFormSubmit } from './utils.js';
 import { PHONE_REGEXP } from './const.js';
 import { setEventListenersToPhoneField } from './form-fields/phone-field.js';
 import { setEventListenersToCardField, isValidCardNumber } from './form-fields/card-fields.js';
 
 const pickUpBlock = document.querySelector('.tabs-block__pick-up');
 const pickUpForm = pickUpBlock.querySelector('form');
-const payTabsWrapper = pickUpBlock.querySelector('.input-wrapper--payment-method');
-const payTabs = payTabsWrapper.querySelectorAll('input');
 const cardInputField = pickUpBlock.querySelector('.card');
 const cardInputs = cardInputField.querySelectorAll('input');
 const phoneInput = pickUpForm.querySelector('#phone');
@@ -18,7 +16,7 @@ const submitBtn = pickUpBlock.querySelector('.form__submit-btn');
 pickUpForm.querySelector('#payment-card').checked = true;
 getEmptyFormMessage(submitHelper, phoneInput.name, 'card');
 
-payTabs.forEach((tab) => tab.addEventListener('click', (evt) => payTabOnclickChange(evt, cardInputField, payTabs)));
+const formInputs = [phoneInput];
 
 setEventListenersToCardField(cardInputs);
 setEventListenersToPhoneField(phoneInput);
@@ -26,9 +24,12 @@ setEventListenersToPhoneField(phoneInput);
 pickUpForm.addEventListener('input', () => {
   const formFieldsValidateFunction = new Map([
     [phoneInput.name, validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInputWrapper)],
-    ['card', isValidCardNumber(cardInputs, cardInputField)]
   ]);
+
+  if(pickUpForm.querySelector('#payment-card').checked) {
+    formFieldsValidateFunction.set('card', isValidCardNumber(cardInputs, cardInputField));
+  }
   onInputFormValidate(submitBtn, submitHelper, formStateBlock, formFieldsValidateFunction);
 });
 
-pickUpForm.addEventListener('submit', (evt) => onFormSubmit(evt, cardInputs));
+pickUpForm.addEventListener('submit', (evt) => onFormSubmit(evt, submitBtn, cardInputs, formInputs));

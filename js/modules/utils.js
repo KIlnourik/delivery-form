@@ -104,12 +104,10 @@ const getAddressFromMap = (coordinates) => {
 const cardFieldDisable = (value, cardFieldWrapper) => {
   switch (value) {
     case 'cash':
-      cardFieldWrapper.querySelectorAll('input').forEach((input) => input.setAttribute('disabled', 'disabled'));
-      cardFieldWrapper.classList.add('input-wrapper--hidden');
+      cardFieldWrapper.querySelectorAll('input').forEach((input) => { input.disabled = true; });
       break;
     case 'card':
-      cardFieldWrapper.querySelectorAll('input').forEach((input) => input.removeAttribute('disabled', 'disabled'));
-      cardFieldWrapper.classList.remove('input-wrapper--hidden');
+      cardFieldWrapper.querySelectorAll('input').forEach((input) => { input.disabled = false; });
       break;
   }
 };
@@ -135,14 +133,6 @@ const getEmptyFormMessage = (helper, ...emptyForms) => {
     emptyFormsFragment.append(emptyFormElementSpan);
   }
   helper.appendChild(emptyFormsFragment);
-};
-
-const onSuccess = () => {
-
-};
-
-const onFail = () => {
-
 };
 
 const validateByRegExp = (regexp, value, wrapper) => {
@@ -226,8 +216,6 @@ export {
   getAddressFromMap,
   payTabOnclickChange,
   getEmptyFormMessage,
-  onSuccess,
-  onFail,
   validateByRegExp,
   getInvalidInputs,
   onInputFormValidate,

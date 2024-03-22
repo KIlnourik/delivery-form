@@ -2,7 +2,7 @@ const deliveryForm = document.querySelector('.tabs-block__item-delivery');
 const pickUpForm = document.querySelector('.tabs-block__pick-up');
 const deliveryTabs = document.querySelectorAll('.tab');
 
-pickUpForm.classList.add('hidden');
+deliveryForm.classList.add('hidden');
 
 const formDisabler = (tabData) => {
   switch (tabData) {
