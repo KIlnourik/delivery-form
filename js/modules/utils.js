@@ -1,6 +1,7 @@
 import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS, SUBMIT_HELPER_TIPS, SUCCESS_UPLOAD_COLOR, SUCCESS_UPLOAD_MESSAGE, FAIL_UPLOAD_MESSAGE } from './const.js';
 import { sendData } from './api.js';
 import { resetSlider } from './delivery-form/time-slider.js';
+import { resetCity } from './city-tabs.js';
 
 const showAlert = (message, backgroundColor = 'tomato') => {
   const alertContainer = document.createElement('p');
@@ -9,7 +10,7 @@ const showAlert = (message, backgroundColor = 'tomato') => {
   alertContainer.style.left = '50%';
   alertContainer.style.top = '50vh';
   alertContainer.style.width = '60vw';
-  alertContainer.style.transform = 'translate(-50%, -50%)';
+  alertContainer.style.transform = 'translate(-50%, 0)';
   alertContainer.style.padding = '40px 20px';
   alertContainer.style.fontSize = '40px';
   alertContainer.style.lineHeight = '1.2';
@@ -191,6 +192,7 @@ const onFormSubmit = (evt, submitBtn, cardInputs, formInputs) => {
   submitBtn.textContent = 'Отправка...';
   sendData(
     () => {
+      resetCity();
       formReset(cardInputs, formInputs);
       resetSlider();
       showAlert(SUCCESS_UPLOAD_MESSAGE, SUCCESS_UPLOAD_COLOR);

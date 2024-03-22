@@ -6,7 +6,7 @@ deliveryForm.classList.add('hidden');
 
 const formDisabler = (tabData) => {
   switch (tabData) {
-    case 'pickup':
+    case 'pick-up':
       deliveryForm.classList.add('hidden');
       pickUpForm.classList.remove('hidden');
       break;
