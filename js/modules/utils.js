@@ -7,7 +7,7 @@ const showAlert = (message, backgroundColor = 'tomato') => {
   alertContainer.style.zIndex = '1000';
   alertContainer.style.position = 'absolute';
   alertContainer.style.left = '50%';
-  alertContainer.style.top = '50%';
+  alertContainer.style.top = '50vh';
   alertContainer.style.width = '60vw';
   alertContainer.style.transform = 'translate(-50%, -50%)';
   alertContainer.style.padding = '40px 20px';
@@ -19,7 +19,6 @@ const showAlert = (message, backgroundColor = 'tomato') => {
   alertContainer.style.borderRadius = '10px';
   alertContainer.style.border = '2px black solid';
   alertContainer.style.boxShadow = '2px 3px';
-
   alertContainer.textContent = message;
 
   document.body.append(alertContainer);
@@ -127,7 +126,9 @@ const getEmptyFormMessage = (helper, ...emptyForms) => {
   for (let i = 0; i < emptyForms.length; i++) {
     const emptyFormElementSpan = document.createElement('span');
     emptyFormElementSpan.textContent = getEqualInObj(emptyForms[i], SUBMIT_HELPER_TIPS);
-    if (i > 0) {
+    if (i > 0 && i !== emptyForms.length - 1) {
+      emptyFormsFragment.append(', ', emptyFormElementSpan);
+    } else if (i === emptyForms.length - 1) {
       emptyFormsFragment.append(' и ', emptyFormElementSpan);
     }
     emptyFormsFragment.append(emptyFormElementSpan);
