@@ -204,6 +204,9 @@ const onFormSubmit = (evt, submitBtn, cardInputs, formInputs) => {
     data);
 };
 
+const setEventListenerOnPayTabs = (payTabs, cardInputWrapper) => payTabs.forEach((tab) =>
+  tab.addEventListener('click', (evt) => payTabOnclickChange(evt, cardInputWrapper, payTabs)));
+
 export {
   showAlert,
   cityDataAdapter,
@@ -220,5 +223,6 @@ export {
   validateByRegExp,
   getInvalidInputs,
   onInputFormValidate,
-  onFormSubmit
+  onFormSubmit,
+  setEventListenerOnPayTabs
 };

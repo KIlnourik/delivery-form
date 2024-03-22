@@ -1,4 +1,4 @@
-import { getEmptyFormMessage, validateByRegExp, onInputFormValidate, onFormSubmit } from './utils.js';
+import { getEmptyFormMessage, validateByRegExp, onInputFormValidate, onFormSubmit, setEventListenerOnPayTabs } from './utils.js';
 import { ADDRESS_REGEXP, PHONE_REGEXP } from './const.js';
 import { isDateValid } from './form-fields/date-field.js';
 import { setEventListenersToCardField, isValidCardNumber } from './form-fields/card-fields.js';
@@ -10,6 +10,8 @@ const addressInput = deliveryBlock.querySelector('#delivery-address');
 const addressInputWrapper = addressInput.closest('div');
 const dateInput = deliveryBlock.querySelector('#delivery-user-date-delivery');
 const dateInputWrapper = dateInput.closest('div');
+const payTabsWrapper = deliveryForm.querySelector('.input-wrapper--payment-method');
+const payTabs = payTabsWrapper.querySelectorAll('input');
 const cardInputField = deliveryBlock.querySelector('.card');
 const cardInputs = cardInputField.querySelectorAll('input');
 const phoneInput = deliveryBlock.querySelector('#phone');
@@ -19,12 +21,13 @@ const submitHelper = formStateBlock.querySelector('.form__submit-help');
 const submitBtn = deliveryBlock.querySelector('.form__submit-btn');
 const timeIntervalInput = deliveryBlock.querySelector('#delivery-user-date-delivery');
 
-// deliveryBlock.querySelector('#payment-card').checked = true;
+deliveryBlock.querySelector('#delivery-payment-card').checked = true;
 submitBtn.disabled = true;
 getEmptyFormMessage(submitHelper, addressInput.name, dateInput.name, phoneInput.name, 'card');
 
 const formInputs = [addressInput, dateInput, phoneInput, timeIntervalInput];
 
+setEventListenerOnPayTabs(payTabs, cardInputField);
 setEventListenersToCardField(cardInputs);
 setEventListenersToPhoneField(phoneInput);
 
@@ -35,7 +38,7 @@ deliveryForm.addEventListener('input', () => {
     [phoneInput.name, validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInputWrapper)]
   ]);
 
-  if(deliveryBlock.querySelector('#payment-card').checked) {
+  if(deliveryBlock.querySelector('#delivery-payment-card').checked) {
     formFieldsValidateFunction.set('card', isValidCardNumber(cardInputs, cardInputField));
   }
 
