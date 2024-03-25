@@ -1,17 +1,16 @@
-import { getEmptyFormMessage, validateByRegExp, onInputFormValidate, onFormSubmit, setEventListenerOnPayTabs } from './utils.js';
+import { validateByRegExp, onInputFormValidate, onFormSubmit, setEventListenerOnPayTabs } from './utils.js';
 import { ADDRESS_REGEXP, PHONE_REGEXP } from './const.js';
 import { isDateValid } from './form-fields/date-field.js';
 import { setEventListenersToCardField, isValidCardNumber } from './form-fields/card-fields.js';
 import { setEventListenersToPhoneField } from './form-fields/phone-field.js';
 
-const deliveryBlock = document.querySelector('.tabs-block__item-delivery');
+const deliveryBlock = document.querySelector('.tabs-block__delivery');
 const deliveryForm = deliveryBlock.querySelector('form');
 const addressInput = deliveryBlock.querySelector('#delivery-address');
 const addressInputWrapper = addressInput.closest('div');
 const dateInput = deliveryBlock.querySelector('#delivery-user-date-delivery');
 const dateInputWrapper = dateInput.closest('div');
-const payTabsWrapper = deliveryForm.querySelector('.input-wrapper--payment-method');
-const payTabs = payTabsWrapper.querySelectorAll('input');
+const payTabs = deliveryForm.querySelector('.input-wrapper--payment-method').querySelectorAll('input');
 const cardInputField = deliveryBlock.querySelector('.card');
 const cardInputs = cardInputField.querySelectorAll('input');
 const phoneInput = deliveryBlock.querySelector('#phone');
@@ -23,11 +22,10 @@ const timeIntervalInput = deliveryBlock.querySelector('#delivery-user-date-deliv
 
 deliveryBlock.querySelector('#delivery-payment-card').checked = true;
 submitBtn.disabled = true;
-getEmptyFormMessage(submitHelper, addressInput.name, dateInput.name, phoneInput.name, 'card');
 
 const formInputs = [addressInput, dateInput, phoneInput, timeIntervalInput];
 
-setEventListenerOnPayTabs(payTabs, cardInputField);
+setEventListenerOnPayTabs(payTabs);
 setEventListenersToCardField(cardInputs);
 setEventListenersToPhoneField(phoneInput);
 
@@ -38,7 +36,7 @@ deliveryForm.addEventListener('input', () => {
     [phoneInput.name, validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInputWrapper)]
   ]);
 
-  if(deliveryBlock.querySelector('#delivery-payment-card').checked) {
+  if (deliveryBlock.querySelector('#delivery-payment-card').checked) {
     formFieldsValidateFunction.set('card', isValidCardNumber(cardInputs, cardInputField));
   }
 

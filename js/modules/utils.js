@@ -126,19 +126,23 @@ const cardFieldDisable = (value, cardInputWrapper) => {
 };
 
 // Функция, которая переключает способ оплаты
-const payTabOnclickChange = (evt, cardInputWrapper, payTabs) => {
+const payTabOnclickChange = (evt) => {
   const deliveryTypeTabs = document.querySelectorAll('.tab');
-  setActiveTab(evt, payTabs);
   const activeTab = evt.target.value;
+
   deliveryTypeTabs.forEach((tab) => {
+    const payTabs = document.querySelector(`.tabs-block__${tab.dataset.tab}`)
+      .querySelector('.input-wrapper--payment-method').querySelectorAll('input');
+    setActiveTab(evt, payTabs);
     document.querySelector(`#${tab.dataset.tab}-payment-${activeTab}`).checked = true;
+    cardFieldDisable(activeTab, document.querySelector(`.tabs-block__${tab.dataset.tab}`)
+      .querySelector('.card'));
   });
-  cardFieldDisable(activeTab, cardInputWrapper);
 };
 
 // Функция, вещающая слушателей событий на табы способов оплаты
-const setEventListenerOnPayTabs = (payTabs, cardInputWrapper) => payTabs.forEach((tab) =>
-  tab.addEventListener('click', (evt) => payTabOnclickChange(evt, cardInputWrapper, payTabs)));
+const setEventListenerOnPayTabs = (payTabs) => payTabs.forEach((tab) =>
+  tab.addEventListener('click', payTabOnclickChange));
 
 // Функция, формирующая сообщение о незаполненных полях формы
 const getEmptyFormMessage = (helper, ...emptyForms) => {

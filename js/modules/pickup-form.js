@@ -1,12 +1,11 @@
-import {  getEmptyFormMessage, validateByRegExp, onInputFormValidate, onFormSubmit, setEventListenerOnPayTabs } from './utils.js';
+import { getEmptyFormMessage, validateByRegExp, onInputFormValidate, onFormSubmit, setEventListenerOnPayTabs } from './utils.js';
 import { PHONE_REGEXP } from './const.js';
 import { setEventListenersToPhoneField } from './form-fields/phone-field.js';
 import { setEventListenersToCardField, isValidCardNumber } from './form-fields/card-fields.js';
 
 const pickUpBlock = document.querySelector('.tabs-block__pick-up');
 const pickUpForm = pickUpBlock.querySelector('form');
-const payTabsWrapper = pickUpForm.querySelector('.input-wrapper--payment-method');
-const payTabs = payTabsWrapper.querySelectorAll('input');
+const payTabs = pickUpForm.querySelector('.input-wrapper--payment-method').querySelectorAll('input');
 const cardInputField = pickUpBlock.querySelector('.card');
 const cardInputs = cardInputField.querySelectorAll('input');
 const phoneInput = pickUpForm.querySelector('#phone');
@@ -20,7 +19,7 @@ getEmptyFormMessage(submitHelper, phoneInput.name, 'card');
 
 const formInputs = [phoneInput];
 
-setEventListenerOnPayTabs(payTabs, cardInputField);
+setEventListenerOnPayTabs(payTabs);
 setEventListenersToCardField(cardInputs);
 setEventListenersToPhoneField(phoneInput);
 
@@ -29,7 +28,7 @@ pickUpForm.addEventListener('input', () => {
     [phoneInput.name, validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInputWrapper)],
   ]);
 
-  if(pickUpForm.querySelector('#pick-up-payment-card').checked) {
+  if (pickUpForm.querySelector('#pick-up-payment-card').checked) {
     formFieldsValidateFunction.set('card', isValidCardNumber(cardInputs, cardInputField));
   }
   onInputFormValidate(submitBtn, submitHelper, formStateBlock, formFieldsValidateFunction);

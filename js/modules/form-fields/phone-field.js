@@ -10,6 +10,8 @@ const onPhoneInputSetFocus = (phoneInput) => {
   phoneInput.setSelectionRange(phoneInput.value.length, phoneInput.value.length);
 };
 
+
+
 const setEventListenersToPhoneField = (phoneInput) => {
   phoneInput.addEventListener('focus', () => onPhoneInputSetFocus(phoneInput));
   phoneInput.addEventListener('click', () => onPhoneInputSetFocus(phoneInput));
