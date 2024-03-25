@@ -1,13 +1,19 @@
-import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS, SUBMIT_HELPER_TIPS, SUCCESS_UPLOAD_COLOR, SUCCESS_UPLOAD_MESSAGE, FAIL_UPLOAD_MESSAGE } from './const.js';
+import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS, SUBMIT_HELPER_TIPS, SUCCESS_UPLOAD_COLOR, SUCCESS_UPLOAD_MESSAGE, FAIL_UPLOAD_MESSAGE, PHONE_REGEXP, ADDRESS_REGEXP } from './const.js';
+import { sendData } from './api.js';
+import { resetSlider } from './delivery-form/time-slider.js';
+import { resetCity } from './city-tabs.js';
+import { isDateValid } from './form-fields/date-field.js';
+import { isValidCardNumber } from './form-fields/card-fields.js';
 
+// Функция, показывающая попап, с переданным сообщением
 const showAlert = (message, backgroundColor = 'tomato') => {
   const alertContainer = document.createElement('p');
   alertContainer.style.zIndex = '1000';
   alertContainer.style.position = 'absolute';
   alertContainer.style.left = '50%';
-  alertContainer.style.top = '50%';
+  alertContainer.style.top = '50vh';
   alertContainer.style.width = '60vw';
-  alertContainer.style.transform = 'translate(-50%, -50%)';
+  alertContainer.style.transform = 'translate(-50%, 0)';
   alertContainer.style.padding = '40px 20px';
   alertContainer.style.fontSize = '40px';
   alertContainer.style.lineHeight = '1.2';
@@ -17,7 +23,6 @@ const showAlert = (message, backgroundColor = 'tomato') => {
   alertContainer.style.borderRadius = '10px';
   alertContainer.style.border = '2px black solid';
   alertContainer.style.boxShadow = '2px 3px';
-
   alertContainer.textContent = message;
 
   document.body.append(alertContainer);
@@ -27,6 +32,7 @@ const showAlert = (message, backgroundColor = 'tomato') => {
   }, ALERT_SHOW_TIME);
 };
 
+// Функция-адаптер для информации с сервера
 const cityDataAdapter = (oneCity) => {
   const {
     id,
@@ -43,6 +49,7 @@ const cityDataAdapter = (oneCity) => {
   };
 };
 
+// Функция применяющая адаптер для каждого из городов
 const adoptCitiesData = (cities) => cities.slice().map((city) => cityDataAdapter(city));
 
 const setActiveTab = (evt, tabs) => {
@@ -54,6 +61,7 @@ const setActiveTab = (evt, tabs) => {
   evt.target.checked = true;
 };
 
+// Функция дебаунс
 const debounce = (callback, timeoutDelay = 500) => {
   let timeoutId;
 
@@ -63,8 +71,10 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
+// Функиця получающая координаты ПВЗ
 const getCityCoordinates = (tab) => tab.dataset.coordinates.split(',');
 
+// Функция, формирующая полный номер карты
 const getFullCardNumber = (cardInputs) => {
   const fullCardNumber = [];
   for (let i = 0; i < cardInputs.length; i++) {
@@ -77,7 +87,8 @@ const getFullCardNumber = (cardInputs) => {
   return (completeCardNumber.length === CARD_NUMBER_LENGTH) ? completeCardNumber : null;
 };
 
-const setErrorClassToContainer = (container, validationResult) => {
+// Функция, устанавливающая определенный статус для блока контейнера
+const setStatusClassToContainer = (container, validationResult) => {
   if (!validationResult) {
     container.classList.add(INPUT_ERR0R_CLASS);
   } else {
@@ -86,6 +97,7 @@ const setErrorClassToContainer = (container, validationResult) => {
   }
 };
 
+// Функция, возвращающая значение из объекта, соответствующее переданному значению
 const getEqualInObj = (value, obj) => {
   for (const i in obj) {
     if (i === value) {
@@ -94,29 +106,49 @@ const getEqualInObj = (value, obj) => {
   }
 };
 
+// Функция, получающая адрес с карты
 const getAddressFromMap = (coordinates) => {
   const { lat, lng } = coordinates;
   return `${lat.toFixed(6)},${lng.toFixed(6)}`;
 };
 
-const cardFieldDisable = (value, cardFieldWrapper) => {
+// Функция, отключающая инпуты
+const cardFieldDisable = (value, cardInputWrapper) => {
   switch (value) {
     case 'cash':
-      cardFieldWrapper.querySelectorAll('input').forEach((input) => input.setAttribute('disabled', 'disabled'));
-      cardFieldWrapper.classList.add('input-wrapper--hidden');
+      cardInputWrapper.querySelectorAll('input').forEach((input) => {
+        input.value = '';
+        input.disabled = true;
+      });
+      cardInputWrapper.classList.remove(INPUT_ERR0R_CLASS);
+      cardInputWrapper.classList.remove(INPUT_SUCCESS_CLASS);
       break;
     case 'card':
-      cardFieldWrapper.querySelectorAll('input').forEach((input) => input.removeAttribute('disabled', 'disabled'));
-      cardFieldWrapper.classList.remove('input-wrapper--hidden');
+      cardInputWrapper.querySelectorAll('input').forEach((input) => { input.disabled = false; });
       break;
   }
 };
 
-const payTabOnclickChange = (evt, cardFieldWrapper, payTabs) => {
-  setActiveTab(evt, payTabs);
-  cardFieldDisable(evt.target.value, cardFieldWrapper);
+// Функция, которая переключает способ оплаты
+const payTabOnclickChange = (evt) => {
+  const deliveryTypeTabs = document.querySelectorAll('.tab');
+  const activeTab = evt.target.value;
+
+  deliveryTypeTabs.forEach((tab) => {
+    const payTabs = document.querySelector(`.tabs-block__${tab.dataset.tab}`)
+      .querySelector('.input-wrapper--payment-method').querySelectorAll('input');
+    setActiveTab(evt, payTabs);
+    document.querySelector(`#${tab.dataset.tab}-payment-${activeTab}`).checked = true;
+    cardFieldDisable(activeTab, document.querySelector(`.tabs-block__${tab.dataset.tab}`)
+      .querySelector('.card'));
+  });
 };
 
+// Функция, вещающая слушателей событий на табы способов оплаты
+const setEventListenerOnPayTabs = (payTabs) => payTabs.forEach((tab) =>
+  tab.addEventListener('click', payTabOnclickChange));
+
+// Функция, формирующая сообщение о незаполненных полях формы
 const getEmptyFormMessage = (helper, ...emptyForms) => {
   if (helper.textContent !== '' && helper.hasChildNodes()) {
     helper.querySelectorAll('span').forEach((item) => item.remove());
@@ -127,7 +159,9 @@ const getEmptyFormMessage = (helper, ...emptyForms) => {
   for (let i = 0; i < emptyForms.length; i++) {
     const emptyFormElementSpan = document.createElement('span');
     emptyFormElementSpan.textContent = getEqualInObj(emptyForms[i], SUBMIT_HELPER_TIPS);
-    if (i > 0) {
+    if (i > 0 && i !== emptyForms.length - 1) {
+      emptyFormsFragment.append(', ', emptyFormElementSpan);
+    } else if (i > 0 && i === emptyForms.length - 1) {
       emptyFormsFragment.append(' и ', emptyFormElementSpan);
     }
     emptyFormsFragment.append(emptyFormElementSpan);
@@ -135,13 +169,121 @@ const getEmptyFormMessage = (helper, ...emptyForms) => {
   helper.appendChild(emptyFormsFragment);
 };
 
-const showSuccessPopup = () => {
-  showAlert(SUCCESS_UPLOAD_MESSAGE, SUCCESS_UPLOAD_COLOR);
+// Функция, проводящая валидацию по переданному регулярному выражению
+const validateByRegExp = (regexp, value, wrapper) => {
+  if (!value.length) {
+    wrapper.classList.remove(INPUT_ERR0R_CLASS);
+    wrapper.classList.remove(INPUT_SUCCESS_CLASS);
+    return false;
+  }
+  setStatusClassToContainer(wrapper, regexp.test(value));
+  return regexp.test(value);
 };
 
-const showFailPopup = () => {
-  showAlert(FAIL_UPLOAD_MESSAGE);
+// Функция, возращающая массив из имен незаполненных полей формы
+const getInvalidInputs = (formFieldsValidateFunction) => {
+  const invalidInputs = [];
+  for (const [key, value] of formFieldsValidateFunction) {
+    if (!value) { invalidInputs.push(key); }
+  }
+  return invalidInputs;
 };
+
+// Функция, валидирующая форму в момент заполнения ее полей
+const onInputFormValidate = (submitBtn, submitHelper, formStateBlock, formFieldsValidateFunction) => {
+  const invalidInputs = getInvalidInputs(formFieldsValidateFunction);
+  if (invalidInputs.length) {
+    formStateBlock.classList.remove('hidden');
+    getEmptyFormMessage(submitHelper, ...invalidInputs);
+    submitBtn.disabled = true;
+  } else {
+    formStateBlock.classList.add('hidden');
+    submitBtn.disabled = false;
+  }
+};
+
+// Функция, очищающая поля номера карты
+const resetCardInput = (cardInputs) => cardInputs.forEach((input) => {
+  input.value = '';
+  input.closest('div').classList.remove(INPUT_SUCCESS_CLASS);
+});
+
+// Функция, очищающая поля формы
+const formReset = (cardInputs, formInputs) => {
+  for (const input of formInputs) {
+    if (input.name === 'time-interval') { input.value = '10:00-12:00'; }
+    input.value = '';
+    input.closest('div').classList.remove(INPUT_SUCCESS_CLASS);
+  }
+  resetCardInput(cardInputs);
+};
+
+// Функция, отправки формы
+const onFormSubmit = (evt, submitBtn, cardInputs, formInputs) => {
+  evt.preventDefault();
+  const data = new FormData(evt.target);
+  if (data.get('payment-method') === 'card') {
+    const fullCardNumber = getFullCardNumber(cardInputs);
+    data.append('card', fullCardNumber);
+  }
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Отправка...';
+  sendData(
+    () => {
+      resetCity();
+      formReset(cardInputs, formInputs);
+      resetSlider();
+      showAlert(SUCCESS_UPLOAD_MESSAGE, SUCCESS_UPLOAD_COLOR);
+      submitBtn.textContent = 'Заказать';
+    },
+    () => {
+      showAlert(FAIL_UPLOAD_MESSAGE);
+      submitBtn.textContent = 'Заказать';
+      submitBtn.disabled = false;
+    },
+    data);
+};
+
+const setPickUpFormValidationFuncs = (block, fieldsValidateFunction) => {
+  const phoneInput = block.querySelector('#phone');
+  fieldsValidateFunction.set(phoneInput.name, validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInput.closest('div')));
+};
+
+const setDeliveryFormValidationFuncs = (block, fieldsValidateFunction) => {
+  const addressInput = block.querySelector('#delivery-address');
+  const dateInput = block.querySelector('#delivery-user-date-delivery');
+  const phoneInput = block.querySelector('#phone');
+  fieldsValidateFunction.set(addressInput.name, validateByRegExp(ADDRESS_REGEXP, addressInput.value, addressInput.closest('div')));
+  fieldsValidateFunction.set(dateInput.name, isDateValid(dateInput, dateInput.closest('div')));
+  fieldsValidateFunction.set(phoneInput.name, validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInput.closest('div')));
+};
+
+const validateForm = (tabData) => {
+  const block = document.querySelector(`.tabs-block__${tabData}`);
+  const formStateBlock = block.querySelector('.form__submit-state');
+  const submitHelper = formStateBlock.querySelector('.form__submit-help');
+  const submitBtn = block.querySelector('.form__submit-btn');
+  const cardInputField = block.querySelector('.card');
+  const cardInputs = cardInputField.querySelectorAll('input');
+
+  const fieldsValidateFunction = new Map();
+
+  switch (tabData) {
+    case 'pick-up':
+      setPickUpFormValidationFuncs(block, fieldsValidateFunction);
+      break;
+    case 'delivery':
+      setDeliveryFormValidationFuncs(block, fieldsValidateFunction);
+      break;
+  }
+  if (document.querySelector(`.tabs-block__${tabData}`)
+    .querySelector(`#${tabData}-payment-card`).checked) {
+    fieldsValidateFunction.set('card', isValidCardNumber(cardInputs, cardInputField));
+  }
+
+  onInputFormValidate(submitBtn, submitHelper, formStateBlock, fieldsValidateFunction);
+};
+
 
 export {
   showAlert,
@@ -151,11 +293,15 @@ export {
   debounce,
   getCityCoordinates,
   getFullCardNumber,
-  setErrorClassToContainer,
+  setStatusClassToContainer,
   getEqualInObj,
   getAddressFromMap,
   payTabOnclickChange,
   getEmptyFormMessage,
-  showSuccessPopup,
-  showFailPopup
+  validateByRegExp,
+  getInvalidInputs,
+  onInputFormValidate,
+  onFormSubmit,
+  setEventListenerOnPayTabs,
+  validateForm
 };

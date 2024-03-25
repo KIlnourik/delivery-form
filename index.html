@@ -10,7 +10,8 @@
   <link rel="preload" href="./fonts/Montserrat-Medium.woff2" as="font" crossorigin="anonymous" />
   <link rel="preload" href="./fonts/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous" />
   <link rel="preload" href="./fonts/Montserrat-Bold.woff2" as="font" crossorigin="anonymous" />
-  <link rel="stylesheet" href="./leaflet/leaflet.css">
+  <link rel="stylesheet" href="./libs/nouislider/dist/nouislider.min.css">
+  <link rel="stylesheet" href="./libs/leaflet/leaflet.css">
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 
@@ -23,7 +24,7 @@
         <h2>Выберите способ получения товара</h2>
 
         <div class="tabs-block__tabs">
-          <div class="tab active" data-tab="pickup" tabindex="0">
+          <div class="tab active" data-tab="pick-up" tabindex="0">
             <span>Самовывоз</span>
             <svg width="288" height="78" viewBox="0 0 288 78" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
@@ -42,7 +43,7 @@
         <div class="tabs-block__content">
           <section class="form tabs-block__pick-up">
             <h2 class="visually-hidden">Форма самовывоза</h2>
-            <form action="https://mock.pages.academy/delivery/requests" method="POST" enctype="multipart/form-data">
+            <form action="https://mock.htmlacademy.pro/delivery/requests" method="POST" enctype="multipart/form-data">
               <h3>Самовывоз</h3>
               <div class="input-wrapper input-wrapper--radio-group">
                 <h4>Город</h4>
@@ -61,10 +62,10 @@
               <div class="map" id="map"></div>
               <h3>Способ оплаты</h3>
               <div class="input-wrapper input-wrapper--radio-group input-wrapper--payment-method">
-                <input id="payment-card" type="radio" name="payment-method" value="card" />
-                <label for="payment-card">Карта</label>
-                <input id="payment-cash" type="radio" name="payment-method" value="cash" />
-                <label for="payment-cash">Наличные</label>
+                <input id="pick-up-payment-card" type="radio" name="payment-method" value="card" />
+                <label for="pick-up-payment-card">Карта</label>
+                <input id="pick-up-payment-cash" type="radio" name="payment-method" value="cash" />
+                <label for="pick-up-payment-cash">Наличные</label>
               </div>
               <div class="input-wrapper input-wrapper--input-group card">
                 <h4>Номер карты</h4>
@@ -78,7 +79,7 @@
                 <label for="card-fields-4" aria-label="Четвёртые четыре цифр с карты"></label>
                 <div class="input-wrapper__error">Введите верный номер карты</div>
               </div>
-              <div class="input-wrapper input-wrapper--input phone">
+              <div class="input-wrapper input-wrapper--input">
                 <h4>Номер телефона</h4>
                 <input id="phone" name="phone" type="tel" placeholder="+7(999)999-99-99" />
                 <label for="phone" aria-label="Введите верный номер телефона, он должен начинаться с +7"></label>
@@ -98,13 +99,13 @@
               </div>
             </form>
           </section>
-          <section class="form tabs-block__item-delivery">
+          <section class="form tabs-block__delivery">
             <h2 class="visually-hidden">Форма доставки</h2>
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="https://mock.htmlacademy.pro/delivery/requests" method="POST" enctype="multipart/form-data">
               <h3>Доставка</h3>
               <div class="input-wrapper input-wrapper--radio-group">
                 <h4>Город</h4>
-                <input id="delivery-led" type="radio" name="city" value="lED" checked />
+                <input id="delivery-led" type="radio" name="city" value="lED" />
                 <label for="delivery-led">Санкт-Петербург</label>
                 <input id="delivery-mow" type="radio" name="city" value="mow" />
                 <label for="delivery-mow">Москва</label>
@@ -113,32 +114,24 @@
                 <input id="delivery-krr" type="radio" name="city" value="krr" />
                 <label for="delivery-krr">Краснодар</label>
               </div>
-              <div class="input-wrapper input-wrapper--error input-wrapper--input">
+              <div class="input-wrapper input-wrapper--input">
                 <h4>Адрес</h4>
-                <input id="delivery-address" type="text" required />
+                <input id="delivery-address" name="address" type="text" required />
                 <label for="delivery-address" aria-label="Укажите адрес"></label>
                 <div class="input-wrapper__error">Укажите адрес</div>
               </div>
-              <div class="input-wrapper input-wrapper--success input-wrapper--input">
+              <div class="input-wrapper input-wrapper--input">
                 <h4>Дата доставки</h4>
-                <input id="delivery-user-date-delivery" type="text" required />
+                <input id="delivery-user-date-delivery" name="date" type="text" placeholder="ДД/ММ/ГГГГ" required />
                 <label for="delivery-user-date-delivery" aria-label="Укажите дату доставки"></label>
                 <div class="input-wrapper__error">Укажите дату доставки</div>
               </div>
               <div class="input-wrapper input-wrapper--range">
                 <h4>Время доставки</h4>
-                <input id="delivery-user-time-delivery" type="range" class="hidden" data-field-type="delivery" />
+                <input id="delivery-user-time-delivery" name="time-interval" type="hidden" data-field-type="delivery" />
                 <label for="delivery-user-time-delivery" aria-label="Укажите время доставки"></label>
-                <div class="range-slider">
-                  <div class="range-slider-thumb-area js_range-slider-thumb-area">
-                    <div class="range-slider-thumb js_range-slider-thumb" tabindex="2">
-                      <div class="range-slider-tooltip">
-                        10:00 - 12:00
-                      </div>
-                      <div class="range-slider-thumb__stripe"></div>
-                      <div class="range-slider-thumb__stripe"></div>
-                      <div class="range-slider-thumb__stripe"></div>
-                    </div>
+                <div class="range-slider__wrapper">
+                  <div class="range-slider">
                   </div>
                   <div class="range-slider-tips">
                     <div class="range-slider-tip">10:00</div>
@@ -150,12 +143,12 @@
               </div>
               <h3>Способ оплаты</h3>
               <div class="input-wrapper input-wrapper--radio-group input-wrapper--payment-method">
-                <input id="payment-card" type="radio" name="payment-method" value="card" />
-                <label for="payment-card">Карта</label>
-                <input id="payment-cash" type="radio" name="payment-method" value="cash" checked />
-                <label for="payment-cash">Наличные</label>
+                <input id="delivery-payment-card" type="radio" name="payment-method" value="card" />
+                <label for="delivery-payment-card">Карта</label>
+                <input id="delivery-payment-cash" type="radio" name="payment-method" value="cash" />
+                <label for="delivery-payment-cash">Наличные</label>
               </div>
-              <div class="input-wrapper input-wrapper--hidden input-wrapper--input-group card">
+              <div class="input-wrapper input-wrapper--input-group card">
                 <h4>Номер карты</h4>
                 <input id="delivery-user-card-1-4" type="text" required />
                 <label for="delivery-user-card-1-4" aria-label="Первые четыре цифр с карты"></label>
@@ -175,7 +168,7 @@
               </div>
               <span class="form__info">Курьер позвонит на указанный номер за час до доставки заказа.</span>
               <div class="form__submit-block">
-                <button class="form__submit-btn" type="submit">Заказать</button>
+                <button class="form__submit-btn" type="submit">Загрузка</button>
                 <div class="form__submit-state">
                   <p class="form__submit-header">
                     Осталось заполнить:
@@ -191,15 +184,21 @@
   </div>
 
   <template id="address-template">
-    <input id="pick-up-address" type="radio" name="address" value="Ленина, 10"/>
+    <input id="pick-up-address" type="radio" name="address" value="Ленина, 10" />
     <label id="address-label" for="pick-up-address-1">Ленина, 10</label>
   </template>
 
-  <template>
-
-  </template>
-
-  <script src="./leaflet/leaflet.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "dayjs": "https://cdn.skypack.dev/dayjs@1.11.10",
+        "dayjs/locale/ru": "https://cdn.skypack.dev/dayjs@1.11.10",
+        "dayjs/plugin/customParseFormat": "https://cdn.skypack.dev/dayjs@1.11.10"
+      }
+    }
+  </script>
+  <script src="./libs/nouislider/dist/nouislider.min.js"></script>
+  <script src="./libs/leaflet/leaflet.js"></script>
   <script src="./js/main.js" type="module"></script>
 
 </body>

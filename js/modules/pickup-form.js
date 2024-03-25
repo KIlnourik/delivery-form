@@ -1,60 +1,27 @@
-import { payTabOnclickChange, getFullCardNumber, getEmptyFormMessage, showSuccessPopup, showFailPopup } from './utils.js';
-import { CARD_INPUT_MAXLENGTH } from './const.js';
-import { switchFocus, switchFocusByKeyBackpace, isValidCardNumber } from './form-validation/card-validation.js';
-import { onPhoneInputSetFocus, isValidPhoneNumber } from './form-validation/phone-validation.js';
-import { sendData } from './api.js';
+import { getEmptyFormMessage, onFormSubmit, setEventListenerOnPayTabs, validateForm } from './utils.js';
+import { setEventListenersToPhoneField } from './form-fields/phone-field.js';
+import { setEventListenersToCardField} from './form-fields/card-fields.js';
+import { DeliveryType } from './const.js';
 
 const pickUpBlock = document.querySelector('.tabs-block__pick-up');
 const pickUpForm = pickUpBlock.querySelector('form');
-const payTabsWrapper = pickUpBlock.querySelector('.input-wrapper--payment-method');
-const payTabs = payTabsWrapper.querySelectorAll('input');
+const payTabs = pickUpForm.querySelector('.input-wrapper--payment-method').querySelectorAll('input');
 const cardInputField = pickUpBlock.querySelector('.card');
 const cardInputs = cardInputField.querySelectorAll('input');
-const phoneInput = pickUpForm.querySelector('input[type=tel]');
+const phoneInput = pickUpForm.querySelector('#phone');
 const formStateBlock = pickUpBlock.querySelector('.form__submit-state');
 const submitHelper = formStateBlock.querySelector('.form__submit-help');
 const submitBtn = pickUpBlock.querySelector('.form__submit-btn');
 
-document.querySelector('#payment-card').checked = true;
+pickUpForm.querySelector('#pick-up-payment-card').checked = true;
 getEmptyFormMessage(submitHelper, phoneInput.name, 'card');
 
-const getInvalidInputs = () => {
-  const invalidInputs = [];
-  if (!isValidPhoneNumber(phoneInput.value)) { invalidInputs.push(phoneInput.name); }
-  if (!isValidCardNumber(cardInputs, cardInputField)) { invalidInputs.push('card'); }
-  return invalidInputs;
-};
+const formInputs = [phoneInput];
 
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  const data = new FormData(evt.target);
-  if (data.get('payment-method') === 'card') {
-    const fullCardNumber = getFullCardNumber(cardInputs);
-    data.append('card', fullCardNumber);
-  }
+setEventListenerOnPayTabs(payTabs);
+setEventListenersToCardField(cardInputs);
+setEventListenersToPhoneField(phoneInput);
 
-  sendData(showSuccessPopup, showFailPopup, data);
-};
+pickUpForm.addEventListener('input', () => validateForm(DeliveryType.pickUp));
 
-payTabs.forEach((tab) => tab.addEventListener('click', (evt) => payTabOnclickChange(evt, cardInputField, payTabs)));
-
-cardInputs.forEach((input) => input.setAttribute('maxLength', CARD_INPUT_MAXLENGTH.toString()));
-cardInputs.forEach((input) => input.addEventListener('keydown', (evt) => switchFocusByKeyBackpace(cardInputs, evt)));
-cardInputs.forEach((input) => input.addEventListener('input', () => switchFocus(cardInputs)));
-
-phoneInput.addEventListener('focus', onPhoneInputSetFocus);
-phoneInput.addEventListener('click', onPhoneInputSetFocus);
-
-pickUpForm.addEventListener('change', () => {
-  const invalidInputs = getInvalidInputs();
-  if (invalidInputs.length) {
-    formStateBlock.classList.remove('hidden');
-    getEmptyFormMessage(submitHelper, ...invalidInputs);
-    submitBtn.disabled = true;
-  } else {
-    formStateBlock.classList.add('hidden');
-    submitBtn.disabled = false;
-  }
-});
-
-pickUpForm.addEventListener('submit', onFormSubmit);
+pickUpForm.addEventListener('submit', (evt) => onFormSubmit(evt, submitBtn, cardInputs, formInputs));

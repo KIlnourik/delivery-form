@@ -37,10 +37,11 @@ const CARD_INPUT_MAXLENGTH = 4;
 const CARD_NUMBER_LENGTH = 16;
 // eslint-disable-next-line no-useless-escape
 const PHONE_REGEXP = new RegExp(/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/);
+const ADDRESS_REGEXP = new RegExp(/^[ул|пер|пр|б-р]*[.\s]*[А-Яа-я-]{2,}[,\s]*[д.]*\s*\d{1,3}[\\\d{1,3}]*[,\s-]*[кв.]*\s*\d{1,3}\s*/);
 const SUBMIT_HELPER_TIPS = {
   address: 'адрес',
   card: 'номер карты',
-  data: 'дата доставки',
+  date: 'дата доставки',
   phone: 'телефон',
   time: 'время доставки'
 };
@@ -49,6 +50,13 @@ const SUCCESS_UPLOAD_MESSAGE = 'Заказ успешно оформлен';
 const SUCCESS_UPLOAD_COLOR = '#99FF99	';
 
 const FAIL_UPLOAD_MESSAGE = 'Не удалось оформить заказ. Что-то пошло не так.';
+const DATE_MASK = 'DD/MM/YYYY';
+const DEFAULT_CITY_TAB = 'led';
+const DeliveryType = {
+  pickUp: 'pick-up',
+  delivery: 'delivery'
+};
+
 
 export {
   ALERT_SHOW_TIME,
@@ -65,8 +73,12 @@ export {
   CARD_INPUT_MAXLENGTH,
   CARD_NUMBER_LENGTH,
   PHONE_REGEXP,
+  ADDRESS_REGEXP,
   SUBMIT_HELPER_TIPS,
   SUCCESS_UPLOAD_MESSAGE,
   SUCCESS_UPLOAD_COLOR,
-  FAIL_UPLOAD_MESSAGE
+  FAIL_UPLOAD_MESSAGE,
+  DATE_MASK,
+  DEFAULT_CITY_TAB,
+  DeliveryType
 };
