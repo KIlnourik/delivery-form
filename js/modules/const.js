@@ -52,6 +52,11 @@ const SUCCESS_UPLOAD_COLOR = '#99FF99	';
 const FAIL_UPLOAD_MESSAGE = 'Не удалось оформить заказ. Что-то пошло не так.';
 const DATE_MASK = 'DD/MM/YYYY';
 const DEFAULT_CITY_TAB = 'led';
+const DeliveryType = {
+  pickUp: 'pick-up',
+  delivery: 'delivery'
+};
+
 
 export {
   ALERT_SHOW_TIME,
@@ -74,5 +79,6 @@ export {
   SUCCESS_UPLOAD_COLOR,
   FAIL_UPLOAD_MESSAGE,
   DATE_MASK,
-  DEFAULT_CITY_TAB
+  DEFAULT_CITY_TAB,
+  DeliveryType
 };

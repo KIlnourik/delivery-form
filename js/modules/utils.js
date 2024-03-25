@@ -1,7 +1,9 @@
-import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS, SUBMIT_HELPER_TIPS, SUCCESS_UPLOAD_COLOR, SUCCESS_UPLOAD_MESSAGE, FAIL_UPLOAD_MESSAGE } from './const.js';
+import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS, SUBMIT_HELPER_TIPS, SUCCESS_UPLOAD_COLOR, SUCCESS_UPLOAD_MESSAGE, FAIL_UPLOAD_MESSAGE, PHONE_REGEXP, ADDRESS_REGEXP } from './const.js';
 import { sendData } from './api.js';
 import { resetSlider } from './delivery-form/time-slider.js';
 import { resetCity } from './city-tabs.js';
+import { isDateValid } from './form-fields/date-field.js';
+import { isValidCardNumber } from './form-fields/card-fields.js';
 
 // Функция, показывающая попап, с переданным сообщением
 const showAlert = (message, backgroundColor = 'tomato') => {
@@ -118,6 +120,8 @@ const cardFieldDisable = (value, cardInputWrapper) => {
         input.value = '';
         input.disabled = true;
       });
+      cardInputWrapper.classList.remove(INPUT_ERR0R_CLASS);
+      cardInputWrapper.classList.remove(INPUT_SUCCESS_CLASS);
       break;
     case 'card':
       cardInputWrapper.querySelectorAll('input').forEach((input) => { input.disabled = false; });
@@ -240,6 +244,47 @@ const onFormSubmit = (evt, submitBtn, cardInputs, formInputs) => {
     data);
 };
 
+const setPickUpFormValidationFuncs = (block, fieldsValidateFunction) => {
+  const phoneInput = block.querySelector('#phone');
+  fieldsValidateFunction.set(phoneInput.name, validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInput.closest('div')));
+};
+
+const setDeliveryFormValidationFuncs = (block, fieldsValidateFunction) => {
+  const addressInput = block.querySelector('#delivery-address');
+  const dateInput = block.querySelector('#delivery-user-date-delivery');
+  const phoneInput = block.querySelector('#phone');
+  fieldsValidateFunction.set(addressInput.name, validateByRegExp(ADDRESS_REGEXP, addressInput.value, addressInput.closest('div')));
+  fieldsValidateFunction.set(dateInput.name, isDateValid(dateInput, dateInput.closest('div')));
+  fieldsValidateFunction.set(phoneInput.name, validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInput.closest('div')));
+};
+
+const validateForm = (tabData) => {
+  const block = document.querySelector(`.tabs-block__${tabData}`);
+  const formStateBlock = block.querySelector('.form__submit-state');
+  const submitHelper = formStateBlock.querySelector('.form__submit-help');
+  const submitBtn = block.querySelector('.form__submit-btn');
+  const cardInputField = block.querySelector('.card');
+  const cardInputs = cardInputField.querySelectorAll('input');
+
+  const fieldsValidateFunction = new Map();
+
+  switch (tabData) {
+    case 'pick-up':
+      setPickUpFormValidationFuncs(block, fieldsValidateFunction);
+      break;
+    case 'delivery':
+      setDeliveryFormValidationFuncs(block, fieldsValidateFunction);
+      break;
+  }
+  if (document.querySelector(`.tabs-block__${tabData}`)
+    .querySelector(`#${tabData}-payment-card`).checked) {
+    fieldsValidateFunction.set('card', isValidCardNumber(cardInputs, cardInputField));
+  }
+
+  onInputFormValidate(submitBtn, submitHelper, formStateBlock, fieldsValidateFunction);
+};
+
+
 export {
   showAlert,
   cityDataAdapter,
@@ -257,5 +302,6 @@ export {
   getInvalidInputs,
   onInputFormValidate,
   onFormSubmit,
-  setEventListenerOnPayTabs
+  setEventListenerOnPayTabs,
+  validateForm
 };

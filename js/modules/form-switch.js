@@ -1,4 +1,5 @@
-import { getEmptyFormMessage } from './utils.js';
+import { validateByRegExp, validateForm } from './utils.js';
+import { PHONE_REGEXP } from './const.js';
 
 const deliveryForm = document.querySelector('.tabs-block__delivery');
 const pickUpForm = document.querySelector('.tabs-block__pick-up');
@@ -19,36 +20,35 @@ const formDisabler = (tabData) => {
   }
 };
 
-const makeEmptyFormMessage = (tabData) => {
+const cardInputsValue = (tabData) => {
+  const pickUpCardInputs = pickUpForm.querySelector('.card').querySelectorAll('input');
+  const deliveryCardInputs = deliveryForm.querySelector('.card').querySelectorAll('input');
   switch (tabData) {
     case 'pick-up':
-      if (pickUpForm.querySelector('#pick-up-payment-card').checked) {
-        return getEmptyFormMessage(
-          pickUpForm.querySelector('.form__submit-help'),
-          pickUpForm.querySelector('#phone').name,
-          'card'
-        );
+      for (let i = 0; i < pickUpCardInputs.length; i++) {
+        pickUpCardInputs[i].value = deliveryCardInputs[i].value;
       }
-      return getEmptyFormMessage(
-        pickUpForm.querySelector('.form__submit-help'),
-        pickUpForm.querySelector('#phone').name
-      );
+      break;
     case 'delivery':
-      if (deliveryForm.querySelector('#delivery-payment-card').checked) {
-        return getEmptyFormMessage(
-          deliveryForm.querySelector('.form__submit-help'),
-          deliveryForm.querySelector('#delivery-address').name,
-          deliveryForm.querySelector('#delivery-user-date-delivery').name,
-          deliveryForm.querySelector('#phone').name,
-          'card'
-        );
+      for (let i = 0; i < pickUpCardInputs.length; i++) {
+        deliveryCardInputs[i].value = pickUpCardInputs[i].value;
       }
-      return getEmptyFormMessage(
-        deliveryForm.querySelector('.form__submit-help'),
-        deliveryForm.querySelector('#delivery-address').name,
-        deliveryForm.querySelector('#delivery-user-date-delivery').name,
-        deliveryForm.querySelector('#phone').name,
-      );
+      break;
+  }
+};
+
+const phoneInputValue = (tabData) => {
+  const pickUpPhoneInput = pickUpForm.querySelector('#phone');
+  const deliveryPhoneInput = deliveryForm.querySelector('#phone');
+  switch (tabData) {
+    case 'pick-up':
+      pickUpPhoneInput.value = deliveryPhoneInput.value;
+      validateByRegExp(PHONE_REGEXP, pickUpPhoneInput.value, pickUpPhoneInput.closest('div'));
+      break;
+    case 'delivery':
+      deliveryPhoneInput.value = pickUpPhoneInput.value;
+      validateByRegExp(PHONE_REGEXP, deliveryPhoneInput.value, deliveryPhoneInput.closest('div'));
+      break;
   }
 };
 
@@ -62,7 +62,9 @@ const tabsSwitch = (evt) => {
         tab.classList.remove('active');
       }
       formDisabler(targetTab.dataset.tab);
-      makeEmptyFormMessage(targetTab.dataset.tab);
+      cardInputsValue(targetTab.dataset.tab);
+      phoneInputValue(targetTab.dataset.tab);
+      validateForm(targetTab.dataset.tab);
     }
   });
 };
