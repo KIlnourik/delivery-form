@@ -15,7 +15,7 @@ const formStateBlock = pickUpBlock.querySelector('.form__submit-state');
 const submitHelper = formStateBlock.querySelector('.form__submit-help');
 const submitBtn = pickUpBlock.querySelector('.form__submit-btn');
 
-pickUpForm.querySelector('#payment-card').checked = true;
+pickUpForm.querySelector('#pick-up-payment-card').checked = true;
 getEmptyFormMessage(submitHelper, phoneInput.name, 'card');
 
 const formInputs = [phoneInput];
@@ -29,7 +29,7 @@ pickUpForm.addEventListener('input', () => {
     [phoneInput.name, validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInputWrapper)],
   ]);
 
-  if(pickUpForm.querySelector('#payment-card').checked) {
+  if(pickUpForm.querySelector('#pick-up-payment-card').checked) {
     formFieldsValidateFunction.set('card', isValidCardNumber(cardInputs, cardInputField));
   }
   onInputFormValidate(submitBtn, submitHelper, formStateBlock, formFieldsValidateFunction);

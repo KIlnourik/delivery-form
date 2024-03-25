@@ -111,22 +111,34 @@ const getAddressFromMap = (coordinates) => {
 };
 
 // Функция, отключающая инпуты
-const cardFieldDisable = (value, cardFieldWrapper) => {
+const cardFieldDisable = (value, cardInputWrapper) => {
   switch (value) {
     case 'cash':
-      cardFieldWrapper.querySelectorAll('input').forEach((input) => { input.disabled = true; });
+      cardInputWrapper.querySelectorAll('input').forEach((input) => {
+        input.value = '';
+        input.disabled = true;
+      });
       break;
     case 'card':
-      cardFieldWrapper.querySelectorAll('input').forEach((input) => { input.disabled = false; });
+      cardInputWrapper.querySelectorAll('input').forEach((input) => { input.disabled = false; });
       break;
   }
 };
 
 // Функция, которая переключает способ оплаты
-const payTabOnclickChange = (evt, cardFieldWrapper, payTabs) => {
+const payTabOnclickChange = (evt, cardInputWrapper, payTabs) => {
+  const deliveryTypeTabs = document.querySelectorAll('.tab');
   setActiveTab(evt, payTabs);
-  cardFieldDisable(evt.target.value, cardFieldWrapper);
+  const activeTab = evt.target.value;
+  deliveryTypeTabs.forEach((tab) => {
+    document.querySelector(`#${tab.dataset.tab}-payment-${activeTab}`).checked = true;
+  });
+  cardFieldDisable(activeTab, cardInputWrapper);
 };
+
+// Функция, вещающая слушателей событий на табы способов оплаты
+const setEventListenerOnPayTabs = (payTabs, cardInputWrapper) => payTabs.forEach((tab) =>
+  tab.addEventListener('click', (evt) => payTabOnclickChange(evt, cardInputWrapper, payTabs)));
 
 // Функция, формирующая сообщение о незаполненных полях формы
 const getEmptyFormMessage = (helper, ...emptyForms) => {
@@ -141,7 +153,7 @@ const getEmptyFormMessage = (helper, ...emptyForms) => {
     emptyFormElementSpan.textContent = getEqualInObj(emptyForms[i], SUBMIT_HELPER_TIPS);
     if (i > 0 && i !== emptyForms.length - 1) {
       emptyFormsFragment.append(', ', emptyFormElementSpan);
-    } else if (i === emptyForms.length - 1) {
+    } else if (i > 0 && i === emptyForms.length - 1) {
       emptyFormsFragment.append(' и ', emptyFormElementSpan);
     }
     emptyFormsFragment.append(emptyFormElementSpan);
@@ -223,10 +235,6 @@ const onFormSubmit = (evt, submitBtn, cardInputs, formInputs) => {
     },
     data);
 };
-
-// Функция, вещающая слушателей событий на табы способов оплаты
-const setEventListenerOnPayTabs = (payTabs, cardInputWrapper) => payTabs.forEach((tab) =>
-  tab.addEventListener('click', (evt) => payTabOnclickChange(evt, cardInputWrapper, payTabs)));
 
 export {
   showAlert,
