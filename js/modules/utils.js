@@ -3,6 +3,7 @@ import { sendData } from './api.js';
 import { resetSlider } from './delivery-form/time-slider.js';
 import { resetCity } from './city-tabs.js';
 
+// Функция, показывающая попап, с переданным сообщением
 const showAlert = (message, backgroundColor = 'tomato') => {
   const alertContainer = document.createElement('p');
   alertContainer.style.zIndex = '1000';
@@ -29,6 +30,7 @@ const showAlert = (message, backgroundColor = 'tomato') => {
   }, ALERT_SHOW_TIME);
 };
 
+// Функция-адаптер для информации с сервера
 const cityDataAdapter = (oneCity) => {
   const {
     id,
@@ -45,6 +47,7 @@ const cityDataAdapter = (oneCity) => {
   };
 };
 
+// Функция применяющая адаптер для каждого из городов
 const adoptCitiesData = (cities) => cities.slice().map((city) => cityDataAdapter(city));
 
 const setActiveTab = (evt, tabs) => {
@@ -56,6 +59,7 @@ const setActiveTab = (evt, tabs) => {
   evt.target.checked = true;
 };
 
+// Функция дебаунс
 const debounce = (callback, timeoutDelay = 500) => {
   let timeoutId;
 
@@ -65,8 +69,10 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
+// Функиця получающая координаты ПВЗ
 const getCityCoordinates = (tab) => tab.dataset.coordinates.split(',');
 
+// Функция, формирующая полный номер карты
 const getFullCardNumber = (cardInputs) => {
   const fullCardNumber = [];
   for (let i = 0; i < cardInputs.length; i++) {
@@ -79,6 +85,7 @@ const getFullCardNumber = (cardInputs) => {
   return (completeCardNumber.length === CARD_NUMBER_LENGTH) ? completeCardNumber : null;
 };
 
+// Функция, устанавливающая определенный статус для блока контейнера
 const setStatusClassToContainer = (container, validationResult) => {
   if (!validationResult) {
     container.classList.add(INPUT_ERR0R_CLASS);
@@ -88,6 +95,7 @@ const setStatusClassToContainer = (container, validationResult) => {
   }
 };
 
+// Функция, возвращающая значение из объекта, соответствующее переданному значению
 const getEqualInObj = (value, obj) => {
   for (const i in obj) {
     if (i === value) {
@@ -96,11 +104,13 @@ const getEqualInObj = (value, obj) => {
   }
 };
 
+// Функция, получающая адрес с карты
 const getAddressFromMap = (coordinates) => {
   const { lat, lng } = coordinates;
   return `${lat.toFixed(6)},${lng.toFixed(6)}`;
 };
 
+// Функция, отключающая инпуты
 const cardFieldDisable = (value, cardFieldWrapper) => {
   switch (value) {
     case 'cash':
@@ -112,11 +122,13 @@ const cardFieldDisable = (value, cardFieldWrapper) => {
   }
 };
 
+// Функция, которая переключает способ оплаты
 const payTabOnclickChange = (evt, cardFieldWrapper, payTabs) => {
   setActiveTab(evt, payTabs);
   cardFieldDisable(evt.target.value, cardFieldWrapper);
 };
 
+// Функция, формирующая сообщение о незаполненных полях формы
 const getEmptyFormMessage = (helper, ...emptyForms) => {
   if (helper.textContent !== '' && helper.hasChildNodes()) {
     helper.querySelectorAll('span').forEach((item) => item.remove());
@@ -137,6 +149,7 @@ const getEmptyFormMessage = (helper, ...emptyForms) => {
   helper.appendChild(emptyFormsFragment);
 };
 
+// Функция, проводящая валидацию по переданному регулярному выражению
 const validateByRegExp = (regexp, value, wrapper) => {
   if (!value.length) {
     wrapper.classList.remove(INPUT_ERR0R_CLASS);
@@ -147,6 +160,7 @@ const validateByRegExp = (regexp, value, wrapper) => {
   return regexp.test(value);
 };
 
+// Функция, возращающая массив из имен незаполненных полей формы
 const getInvalidInputs = (formFieldsValidateFunction) => {
   const invalidInputs = [];
   for (const [key, value] of formFieldsValidateFunction) {
@@ -155,6 +169,7 @@ const getInvalidInputs = (formFieldsValidateFunction) => {
   return invalidInputs;
 };
 
+// Функция, валидирующая форму в момент заполнения ее полей
 const onInputFormValidate = (submitBtn, submitHelper, formStateBlock, formFieldsValidateFunction) => {
   const invalidInputs = getInvalidInputs(formFieldsValidateFunction);
   if (invalidInputs.length) {
@@ -167,11 +182,13 @@ const onInputFormValidate = (submitBtn, submitHelper, formStateBlock, formFields
   }
 };
 
+// Функция, очищающая поля номера карты
 const resetCardInput = (cardInputs) => cardInputs.forEach((input) => {
   input.value = '';
   input.closest('div').classList.remove(INPUT_SUCCESS_CLASS);
 });
 
+// Функция, очищающая поля формы
 const formReset = (cardInputs, formInputs) => {
   for (const input of formInputs) {
     if (input.name === 'time-interval') { input.value = '10:00-12:00'; }
@@ -181,6 +198,7 @@ const formReset = (cardInputs, formInputs) => {
   resetCardInput(cardInputs);
 };
 
+// Функция, отправки формы
 const onFormSubmit = (evt, submitBtn, cardInputs, formInputs) => {
   evt.preventDefault();
   const data = new FormData(evt.target);
@@ -206,6 +224,7 @@ const onFormSubmit = (evt, submitBtn, cardInputs, formInputs) => {
     data);
 };
 
+// Функция, вещающая слушателей событий на табы способов оплаты
 const setEventListenerOnPayTabs = (payTabs, cardInputWrapper) => payTabs.forEach((tab) =>
   tab.addEventListener('click', (evt) => payTabOnclickChange(evt, cardInputWrapper, payTabs)));
 
