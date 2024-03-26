@@ -1,7 +1,7 @@
 # Проект "Заказ доставки в интернет-магазине"
 
 
-## Реализован с помощью Vanilla Javascript, библиотек Leaflet, Dayjs, noUiSlider
+## Реализован с помощью **Vanilla Javascript**, библиотек **Leaflet, Dayjs, noUiSlider**
 ## Сборка проекта - **Vite**
 
 Исходный шаблон (верстка, шрифты, стилизация) предоставлены [HTML Academy](https://htmlacademy.ru/projects?_ga=2.169289257.948206913.1672570638-2106917507.1636362028)
