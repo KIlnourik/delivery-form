@@ -41,10 +41,11 @@ noUiSlider.create(rangeSlider, {
   start: INITIAL_START_MINUTE,
   range: {
     'min': INITIAL_START_MINUTE,
-    'max': INITIAL_END_MINUTE,
+    'max': 1020,
   },
   step: SLIDER_STEP,
   format: format,
+  padding: 0,
   tooltips:
   {
     to: function (value) {

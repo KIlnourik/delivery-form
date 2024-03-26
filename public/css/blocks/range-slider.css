@@ -99,7 +99,7 @@
 }
 
 .range-slider .noUi-base {
-  width: calc(100% - 108px);
+  width: calc(100% - 108px) !important;
   height: 100%;
 }
 
