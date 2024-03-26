@@ -5,8 +5,7 @@ import { getFullCardNumber, setStatusClassToContainer } from '../utils.js';
 const switchFocus = (cardInputs) => {
   for (let i = 0; i < cardInputs.length - 1; i++) {
     if (document.activeElement === cardInputs[i] &&
-      cardInputs[i].value.length === CARD_INPUT_MAXLENGTH &&
-      !isNaN(Number(cardInputs[i].value))) {
+      cardInputs[i].value.length === CARD_INPUT_MAXLENGTH) {
       cardInputs[i].blur();
       cardInputs[i + 1].focus();
     }
