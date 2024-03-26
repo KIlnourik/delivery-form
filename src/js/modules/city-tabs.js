@@ -40,6 +40,7 @@ const resetCity = () => {
       document.querySelector(`#${tab.dataset.tab}-${DEFAULT_CITY_TAB}`).checked = true;
     }
   });
+  renderDeliveryPoints(DEFAULT_CITY_TAB);
 };
 
 export { resetCity };

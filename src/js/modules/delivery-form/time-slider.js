@@ -1,10 +1,7 @@
+import { INITIAL_START_MINUTE, INITIAL_END_MINUTE, SLIDER_STEP, MINUTES_PER_HOUR } from '../const.js';
+
 const rangeSlider = document.querySelector('.range-slider');
 const rangeSliderInput = document.querySelector('#delivery-user-time-delivery');
-
-const initialStartMinute = 600;
-const initialEndMinute = 1020;
-const step = 20;
-const MINUTES_PER_HOUR = 60;
 
 const convertToHour = (value) => Math.floor(value / MINUTES_PER_HOUR);
 
@@ -41,12 +38,12 @@ const setDeliveryTimeInterval = (value) => {
 };
 
 noUiSlider.create(rangeSlider, {
-  start: initialStartMinute,
+  start: INITIAL_START_MINUTE,
   range: {
-    'min': initialStartMinute,
-    'max': initialEndMinute,
+    'min': INITIAL_START_MINUTE,
+    'max': INITIAL_END_MINUTE,
   },
-  step: step,
+  step: SLIDER_STEP,
   format: format,
   tooltips:
   {
@@ -61,6 +58,6 @@ rangeSlider.noUiSlider.on('update', (values) => {
   rangeSliderInput.value = setDeliveryTimeInterval(values[0]);
 });
 
-const resetSlider = () => {rangeSlider.noUiSlider.reset();};
+const resetSlider = () => { rangeSlider.noUiSlider.reset(); };
 
-export {resetSlider};
+export { resetSlider };

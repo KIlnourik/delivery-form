@@ -24,13 +24,6 @@ const CITIES_CENTER_COORDINATES = {
 const MAP_ADDRESS_SCALE = 10;
 const MAP_CURRENT_ADDRESS_SCALE = 15;
 
-const INPUT_ERROR_TEXT = {
-  cardError: 'Введите верный номер карты',
-  phoneError: 'Введите верный номер телефона, он должен начинаться с +7',
-  addressError: 'Укажите адрес',
-  dateError: 'Укажите корректную дату доставки'
-};
-
 const INPUT_ERR0R_CLASS = 'input-wrapper--error';
 const INPUT_SUCCESS_CLASS = 'input-wrapper--success';
 const CARD_INPUT_MAXLENGTH = 4;
@@ -56,7 +49,21 @@ const DeliveryType = {
   pickUp: 'pick-up',
   delivery: 'delivery'
 };
+const SubmitButtonText = {
+  load: 'Загрузка',
+  send: 'Отправка...',
+};
+const PayType = {
+  card: 'card',
+  cash: 'cash',
+};
+const DEFAULT_TIME_INTERVAL = '10:00-12:00';
+const DIV_HTML_TAG = 'div';
 
+const INITIAL_START_MINUTE = 600;
+const INITIAL_END_MINUTE = 1020;
+const SLIDER_STEP = 20;
+const MINUTES_PER_HOUR = 60;
 
 export {
   ALERT_SHOW_TIME,
@@ -68,7 +75,6 @@ export {
   MAP_CURRENT_ADDRESS_SCALE,
   RERENDER_DELAY,
   INPUT_ERR0R_CLASS,
-  INPUT_ERROR_TEXT,
   INPUT_SUCCESS_CLASS,
   CARD_INPUT_MAXLENGTH,
   CARD_NUMBER_LENGTH,
@@ -80,5 +86,13 @@ export {
   FAIL_UPLOAD_MESSAGE,
   DATE_MASK,
   DEFAULT_CITY_TAB,
-  DeliveryType
+  DeliveryType,
+  SubmitButtonText,
+  PayType,
+  DEFAULT_TIME_INTERVAL,
+  DIV_HTML_TAG,
+  INITIAL_START_MINUTE,
+  INITIAL_END_MINUTE,
+  SLIDER_STEP,
+  MINUTES_PER_HOUR
 };

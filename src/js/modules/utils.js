@@ -1,4 +1,21 @@
-import { ALERT_SHOW_TIME, CARD_NUMBER_LENGTH, CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS, SUBMIT_HELPER_TIPS, SUCCESS_UPLOAD_COLOR, SUCCESS_UPLOAD_MESSAGE, FAIL_UPLOAD_MESSAGE, PHONE_REGEXP, ADDRESS_REGEXP } from './const.js';
+import {
+  ALERT_SHOW_TIME,
+  CARD_NUMBER_LENGTH,
+  CARD_INPUT_MAXLENGTH,
+  INPUT_ERR0R_CLASS,
+  INPUT_SUCCESS_CLASS,
+  SUBMIT_HELPER_TIPS,
+  SUCCESS_UPLOAD_COLOR,
+  SUCCESS_UPLOAD_MESSAGE,
+  FAIL_UPLOAD_MESSAGE,
+  PHONE_REGEXP,
+  ADDRESS_REGEXP,
+  SubmitButtonText,
+  PayType,
+  DEFAULT_TIME_INTERVAL,
+  DeliveryType,
+  DIV_HTML_TAG
+} from './const.js';
 import { sendData } from './api.js';
 import { resetSlider } from './delivery-form/time-slider.js';
 import { resetCity } from './city-tabs.js';
@@ -7,13 +24,27 @@ import { isValidCardNumber } from './form-fields/card-fields.js';
 
 // Функция, показывающая попап, с переданным сообщением
 const showAlert = (message, backgroundColor = 'tomato') => {
+  const alertOverlay = document.createElement(DIV_HTML_TAG);
+  alertOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+  alertOverlay.style.zIndex = '1000';
+  alertOverlay.style.width = '100%';
+  alertOverlay.style.height = '100%';
+  alertOverlay.style.position = 'fixed';
+  alertOverlay.style.left = '0';
+  alertOverlay.style.top = '0';
+  alertOverlay.style.boxSizing = 'border-box';
+
+  const alertWrapper = document.createElement(DIV_HTML_TAG);
+  alertWrapper.style.position = 'relative';
+  alertWrapper.style.height = '100%';
+
   const alertContainer = document.createElement('p');
-  alertContainer.style.zIndex = '1000';
   alertContainer.style.position = 'absolute';
   alertContainer.style.left = '50%';
-  alertContainer.style.top = '50vh';
+  alertContainer.style.top = '50%';
+  alertContainer.style.zIndex = '1001';
   alertContainer.style.width = '60vw';
-  alertContainer.style.transform = 'translate(-50%, 0)';
+  alertContainer.style.transform = 'translate(-50%, -50%)';
   alertContainer.style.padding = '40px 20px';
   alertContainer.style.fontSize = '40px';
   alertContainer.style.lineHeight = '1.2';
@@ -25,10 +56,24 @@ const showAlert = (message, backgroundColor = 'tomato') => {
   alertContainer.style.boxShadow = '2px 3px';
   alertContainer.textContent = message;
 
-  document.body.append(alertContainer);
+  alertOverlay.append(alertWrapper);
+  alertWrapper.append(alertContainer);
+
+  document.body.append(alertOverlay);
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === ('Escape' || 'Esc')) {
+      alertOverlay.remove();
+      document.body.style.height = '';
+      document.body.style.overflow = '';
+    }
+  });
+  document.body.style.height = '100vh';
+  document.body.style.overflow = 'hidden';
 
   setTimeout(() => {
-    alertContainer.remove();
+    alertOverlay.remove();
+    document.body.style.height = '';
+    document.body.style.overflow = '';
   }, ALERT_SHOW_TIME);
 };
 
@@ -115,7 +160,7 @@ const getAddressFromMap = (coordinates) => {
 // Функция, отключающая инпуты
 const cardFieldDisable = (value, cardInputWrapper) => {
   switch (value) {
-    case 'cash':
+    case PayType.cash:
       cardInputWrapper.querySelectorAll('input').forEach((input) => {
         input.value = '';
         input.disabled = true;
@@ -123,7 +168,7 @@ const cardFieldDisable = (value, cardInputWrapper) => {
       cardInputWrapper.classList.remove(INPUT_ERR0R_CLASS);
       cardInputWrapper.classList.remove(INPUT_SUCCESS_CLASS);
       break;
-    case 'card':
+    case PayType.card:
       cardInputWrapper.querySelectorAll('input').forEach((input) => { input.disabled = false; });
       break;
   }
@@ -140,6 +185,14 @@ const payTabOnclickChange = (evt) => {
     setActiveTab(evt, payTabs);
     document.querySelector(`#${tab.dataset.tab}-payment-${activeTab}`).checked = true;
     cardFieldDisable(activeTab, document.querySelector(`.tabs-block__${tab.dataset.tab}`)
+      .querySelector('.card'));
+  });
+};
+
+const resetPayTab = () => {
+  document.querySelectorAll('.tab').forEach((tab) => {
+    document.querySelector(`#${tab.dataset.tab}-payment-card`).checked = true;
+    cardFieldDisable(PayType.card, document.querySelector(`.tabs-block__${tab.dataset.tab}`)
       .querySelector('.card'));
   });
 };
@@ -205,15 +258,15 @@ const onInputFormValidate = (submitBtn, submitHelper, formStateBlock, formFields
 // Функция, очищающая поля номера карты
 const resetCardInput = (cardInputs) => cardInputs.forEach((input) => {
   input.value = '';
-  input.closest('div').classList.remove(INPUT_SUCCESS_CLASS);
+  input.closest(DIV_HTML_TAG).classList.remove(INPUT_SUCCESS_CLASS);
 });
 
 // Функция, очищающая поля формы
 const formReset = (cardInputs, formInputs) => {
   for (const input of formInputs) {
-    if (input.name === 'time-interval') { input.value = '10:00-12:00'; }
+    if (input.name === 'time-interval') { input.value = DEFAULT_TIME_INTERVAL; }
     input.value = '';
-    input.closest('div').classList.remove(INPUT_SUCCESS_CLASS);
+    input.closest(DIV_HTML_TAG).classList.remove(INPUT_SUCCESS_CLASS);
   }
   resetCardInput(cardInputs);
 };
@@ -222,23 +275,24 @@ const formReset = (cardInputs, formInputs) => {
 const onFormSubmit = (evt, submitBtn, cardInputs, formInputs) => {
   evt.preventDefault();
   const data = new FormData(evt.target);
-  if (data.get('payment-method') === 'card') {
+  if (data.get('payment-method') === PayType.card) {
     const fullCardNumber = getFullCardNumber(cardInputs);
-    data.append('card', fullCardNumber);
+    data.append(PayType.card, fullCardNumber);
   }
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Отправка...';
+  submitBtn.textContent = SubmitButtonText.send;
   sendData(
     () => {
       resetCity();
       formReset(cardInputs, formInputs);
       resetSlider();
+      resetPayTab();
       showAlert(SUCCESS_UPLOAD_MESSAGE, SUCCESS_UPLOAD_COLOR);
-      submitBtn.textContent = 'Заказать';
+      submitBtn.textContent = SubmitButtonText.load;
     },
     () => {
       showAlert(FAIL_UPLOAD_MESSAGE);
-      submitBtn.textContent = 'Заказать';
+      submitBtn.textContent = SubmitButtonText.load;
       submitBtn.disabled = false;
     },
     data);
@@ -246,16 +300,16 @@ const onFormSubmit = (evt, submitBtn, cardInputs, formInputs) => {
 
 const setPickUpFormValidationFuncs = (block, fieldsValidateFunction) => {
   const phoneInput = block.querySelector('#phone');
-  fieldsValidateFunction.set(phoneInput.name, validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInput.closest('div')));
+  fieldsValidateFunction.set(phoneInput.name, validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInput.closest(DIV_HTML_TAG)));
 };
 
 const setDeliveryFormValidationFuncs = (block, fieldsValidateFunction) => {
   const addressInput = block.querySelector('#delivery-address');
   const dateInput = block.querySelector('#delivery-user-date-delivery');
   const phoneInput = block.querySelector('#phone');
-  fieldsValidateFunction.set(addressInput.name, validateByRegExp(ADDRESS_REGEXP, addressInput.value, addressInput.closest('div')));
+  fieldsValidateFunction.set(addressInput.name, validateByRegExp(ADDRESS_REGEXP, addressInput.value, addressInput.closest(DIV_HTML_TAG)));
   fieldsValidateFunction.set(dateInput.name, isDateValid(dateInput, dateInput.closest('div')));
-  fieldsValidateFunction.set(phoneInput.name, validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInput.closest('div')));
+  fieldsValidateFunction.set(phoneInput.name, validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInput.closest(DIV_HTML_TAG)));
 };
 
 const validateForm = (tabData) => {
@@ -269,16 +323,16 @@ const validateForm = (tabData) => {
   const fieldsValidateFunction = new Map();
 
   switch (tabData) {
-    case 'pick-up':
+    case DeliveryType.pickUp:
       setPickUpFormValidationFuncs(block, fieldsValidateFunction);
       break;
-    case 'delivery':
+    case DeliveryType.delivery:
       setDeliveryFormValidationFuncs(block, fieldsValidateFunction);
       break;
   }
   if (document.querySelector(`.tabs-block__${tabData}`)
     .querySelector(`#${tabData}-payment-card`).checked) {
-    fieldsValidateFunction.set('card', isValidCardNumber(cardInputs, cardInputField));
+    fieldsValidateFunction.set(PayType.card, isValidCardNumber(cardInputs, cardInputField));
   }
 
   onInputFormValidate(submitBtn, submitHelper, formStateBlock, fieldsValidateFunction);
