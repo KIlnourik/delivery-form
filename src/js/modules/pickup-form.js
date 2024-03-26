@@ -1,7 +1,7 @@
 import { getEmptyFormMessage, onFormSubmit, setEventListenerOnPayTabs, validateForm } from './utils.js';
 import { setEventListenersToPhoneField } from './form-fields/phone-field.js';
 import { setEventListenersToCardField} from './form-fields/card-fields.js';
-import { DeliveryType } from './const.js';
+import { DeliveryType, PayType } from './const.js';
 
 const pickUpBlock = document.querySelector('.tabs-block__pick-up');
 const pickUpForm = pickUpBlock.querySelector('form');
@@ -14,7 +14,7 @@ const submitHelper = formStateBlock.querySelector('.form__submit-help');
 const submitBtn = pickUpBlock.querySelector('.form__submit-btn');
 
 pickUpForm.querySelector('#pick-up-payment-card').checked = true;
-getEmptyFormMessage(submitHelper, phoneInput.name, 'card');
+getEmptyFormMessage(submitHelper, phoneInput.name, PayType.card);
 
 const formInputs = [phoneInput];
 
