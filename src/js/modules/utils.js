@@ -9,7 +9,6 @@ import {
   SUCCESS_UPLOAD_MESSAGE,
   FAIL_UPLOAD_MESSAGE,
   PHONE_REGEXP,
-  ADDRESS_REGEXP,
   SubmitButtonText,
   PayType,
   DEFAULT_TIME_INTERVAL,
@@ -123,8 +122,7 @@ const getCityCoordinates = (tab) => tab.dataset.coordinates.split(',');
 const getFullCardNumber = (cardInputs) => {
   const fullCardNumber = [];
   for (let i = 0; i < cardInputs.length; i++) {
-    if (cardInputs[i].value.length === CARD_INPUT_MAXLENGTH &&
-      !isNaN(Number(cardInputs[i].value))) {
+    if (cardInputs[i].value.length === CARD_INPUT_MAXLENGTH) {
       fullCardNumber.push(cardInputs[i].value);
     }
   }
@@ -233,6 +231,15 @@ const validateByRegExp = (regexp, value, wrapper) => {
   return regexp.test(value);
 };
 
+const isEmptyFormField = (input, wrapper) => {
+  if (!input.value.length) {
+    wrapper.classList.remove(INPUT_SUCCESS_CLASS);
+    return false;
+  }
+  wrapper.classList.add(INPUT_SUCCESS_CLASS);
+  return true;
+};
+
 // Функция, возращающая массив из имен незаполненных полей формы
 const getInvalidInputs = (formFieldsValidateFunction) => {
   const invalidInputs = [];
@@ -307,8 +314,8 @@ const setDeliveryFormValidationFuncs = (block, fieldsValidateFunction) => {
   const addressInput = block.querySelector('#delivery-address');
   const dateInput = block.querySelector('#delivery-user-date-delivery');
   const phoneInput = block.querySelector('#phone');
-  fieldsValidateFunction.set(addressInput.name, validateByRegExp(ADDRESS_REGEXP, addressInput.value, addressInput.closest(DIV_HTML_TAG)));
-  fieldsValidateFunction.set(dateInput.name, isDateValid(dateInput, dateInput.closest('div')));
+  fieldsValidateFunction.set(addressInput.name, isEmptyFormField(addressInput, addressInput.closest(DIV_HTML_TAG)));
+  fieldsValidateFunction.set(dateInput.name, isDateValid(dateInput, dateInput.closest(DIV_HTML_TAG)));
   fieldsValidateFunction.set(phoneInput.name, validateByRegExp(PHONE_REGEXP, phoneInput.value, phoneInput.closest(DIV_HTML_TAG)));
 };
 
@@ -321,7 +328,6 @@ const validateForm = (tabData) => {
   const cardInputs = cardInputField.querySelectorAll('input');
 
   const fieldsValidateFunction = new Map();
-
   switch (tabData) {
     case DeliveryType.pickUp:
       setPickUpFormValidationFuncs(block, fieldsValidateFunction);

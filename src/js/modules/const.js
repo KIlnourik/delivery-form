@@ -30,7 +30,6 @@ const CARD_INPUT_MAXLENGTH = 4;
 const CARD_NUMBER_LENGTH = 16;
 // eslint-disable-next-line no-useless-escape
 const PHONE_REGEXP = new RegExp(/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/);
-const ADDRESS_REGEXP = new RegExp(/^[ул|пер|пр|б-р]*[.\s]*[А-Яа-я-]{2,}[,\s]*[д.]*\s*\d{1,3}[\\\d{1,3}]*[,\s-]*[кв.]*\s*\d{1,3}\s*/);
 const SUBMIT_HELPER_TIPS = {
   address: 'адрес',
   card: 'номер карты',
@@ -79,7 +78,6 @@ export {
   CARD_INPUT_MAXLENGTH,
   CARD_NUMBER_LENGTH,
   PHONE_REGEXP,
-  ADDRESS_REGEXP,
   SUBMIT_HELPER_TIPS,
   SUCCESS_UPLOAD_MESSAGE,
   SUCCESS_UPLOAD_COLOR,
