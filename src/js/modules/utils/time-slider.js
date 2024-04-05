@@ -1,4 +1,9 @@
-import { INITIAL_START_MINUTE, INITIAL_END_MINUTE, SLIDER_STEP, MINUTES_PER_HOUR } from '../const.js';
+import {
+  INITIAL_START_MINUTE,
+  INITIAL_END_MINUTE,
+  SLIDER_STEP,
+  MINUTES_PER_HOUR
+} from '../const.js';
 
 const rangeSlider = document.querySelector('.range-slider');
 const rangeSliderInput = document.querySelector('#delivery-user-time-delivery');
@@ -41,7 +46,7 @@ noUiSlider.create(rangeSlider, {
   start: INITIAL_START_MINUTE,
   range: {
     'min': INITIAL_START_MINUTE,
-    'max': 1020,
+    'max': INITIAL_END_MINUTE,
   },
   step: SLIDER_STEP,
   format: format,

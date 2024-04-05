@@ -1,5 +1,25 @@
-import { CARD_INPUT_MAXLENGTH, INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS } from '../const.js';
-import { getFullCardNumber, setStatusClassToContainer } from '../utils.js';
+import {
+  CARD_INPUT_MAXLENGTH,
+  INPUT_ERR0R_CLASS,
+  INPUT_SUCCESS_CLASS,
+  CARD_NUMBER_LENGTH,
+  DIV_HTML_TAG,
+  PayType,
+} from '../const.js';
+import { setContainerStatusClass } from '../utils/utils.js';
+
+// Функция, отключающая инпуты
+const cardFieldDisable = (value, cardInputWrapper) => {
+  if (value === PayType.card) {
+    return cardInputWrapper.querySelectorAll('input').forEach((input) => { input.disabled = false; });
+  }
+  cardInputWrapper.classList.remove(INPUT_ERR0R_CLASS);
+  cardInputWrapper.classList.remove(INPUT_SUCCESS_CLASS);
+  return cardInputWrapper.querySelectorAll('input').forEach((input) => {
+    input.value = '';
+    input.disabled = true;
+  });
+};
 
 // Переключение фокуса при заполнении одной формы номера карты
 const switchFocus = (cardInputs) => {
@@ -47,12 +67,24 @@ const validateCardNumberMoonAlgorithm = (cardNumberValue) => {
   return checksum % 10 === 0;
 };
 
+// Функция, формирующая полный номер карты
+const getFullCardNumber = (cardInputs) => {
+  const fullCardNumber = [];
+  for (let i = 0; i < cardInputs.length; i++) {
+    if (cardInputs[i].value.length === CARD_INPUT_MAXLENGTH) {
+      fullCardNumber.push(cardInputs[i].value);
+    }
+  }
+  const completeCardNumber = fullCardNumber.join('');
+  return (completeCardNumber.length === CARD_NUMBER_LENGTH) ? completeCardNumber : null;
+};
+
 // Функция проверяет валидность введенного номера карты и устанавливает соответствующий стиль полю формы
 const isValidCardNumber = (cardInputs, cardInputsContainer) => {
   const full = getFullCardNumber(cardInputs);
   if (full !== null) {
     const result = validateCardNumberMoonAlgorithm(full);
-    setStatusClassToContainer(cardInputsContainer, result);
+    setContainerStatusClass(cardInputsContainer, result);
     return result;
   }
   cardInputsContainer.classList.remove(INPUT_ERR0R_CLASS);
@@ -60,10 +92,22 @@ const isValidCardNumber = (cardInputs, cardInputsContainer) => {
   return false;
 };
 
-const setEventListenersToCardField = (cardInputs) => {
+const setCardFieldEventListeners = (cardInputs) => {
   cardInputs.forEach((input) => input.setAttribute('maxLength', CARD_INPUT_MAXLENGTH.toString()));
   cardInputs.forEach((input) => input.addEventListener('keydown', (evt) => switchFocusByKeyBackpace(cardInputs, evt)));
   cardInputs.forEach((input) => input.addEventListener('input', () => switchFocus(cardInputs)));
 };
 
-export { setEventListenersToCardField, isValidCardNumber };
+// Функция, очищающая поля номера карты
+const resetCardInput = (cardInputs) => cardInputs.forEach((input) => {
+  input.value = '';
+  input.closest(DIV_HTML_TAG).classList.remove(INPUT_SUCCESS_CLASS);
+});
+
+export {
+  setCardFieldEventListeners,
+  getFullCardNumber,
+  isValidCardNumber,
+  resetCardInput,
+  cardFieldDisable
+};

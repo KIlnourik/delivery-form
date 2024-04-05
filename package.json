@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/KIlnourik/delivery-form#readme",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3030",
     "build": "vite build",
     "preview": "vite preview"
   },

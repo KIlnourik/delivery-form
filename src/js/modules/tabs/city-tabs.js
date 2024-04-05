@@ -1,6 +1,6 @@
-import { setActiveTab } from './utils.js';
-import { renderDeliveryPoints } from './pick-up-form/address-tabs.js';
-import { DEFAULT_CITY_TAB } from './const.js';
+import { setActiveTab } from '../utils/utils.js';
+import { renderDeliveryPoints } from '../tabs/address-tabs.js';
+import { DEFAULT_CITY_TAB } from '../const.js';
 
 const deliveryTabs = document.querySelectorAll('.tab');
 const pickUpBlock = document.querySelector('.tabs-block__pick-up');
@@ -30,6 +30,7 @@ const onCityDeliveryTabClick = (evt) => {
   setActiveTab(evt, cityDeliveryTabs);
   activeTab = evt.target.value.toLowerCase();
   pickUpForm.querySelector(`#pick-up-${activeTab}`).checked = true;
+  renderDeliveryPoints(activeTab);
 };
 
 cityDeliveryTabs.forEach((tab) => tab.addEventListener('click', onCityDeliveryTabClick));

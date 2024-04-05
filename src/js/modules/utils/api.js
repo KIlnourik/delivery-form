@@ -8,7 +8,7 @@ const getData = (onSuccess) => {
   fetch(GET_URL)
     .then((response) => {
       if (response.ok) {
-        return(response.json());
+        return (response.json());
       }
       throw new Error(`
       ${response.status}

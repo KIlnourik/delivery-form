@@ -1,5 +1,5 @@
 // При фокусе на поле номера телефона проставляет +7 и устанавливает курсор в конец поля формы
-const onPhoneInputSetFocus = (phoneInput) => {
+const setPhoneFieldFocus = (phoneInput) => {
   if (document.activeElement === phoneInput && !phoneInput.value.length) {
     phoneInput.value = '+7';
   }
@@ -10,9 +10,9 @@ const onPhoneInputSetFocus = (phoneInput) => {
   phoneInput.setSelectionRange(phoneInput.value.length, phoneInput.value.length);
 };
 
-const setEventListenersToPhoneField = (phoneInput) => {
-  phoneInput.addEventListener('focus', () => onPhoneInputSetFocus(phoneInput));
-  phoneInput.addEventListener('click', () => onPhoneInputSetFocus(phoneInput));
+const setPhoneFieldEventListeners = (phoneInput) => {
+  phoneInput.addEventListener('focus', () => setPhoneFieldFocus(phoneInput));
+  phoneInput.addEventListener('click', () => setPhoneFieldFocus(phoneInput));
 };
 
-export {onPhoneInputSetFocus, setEventListenersToPhoneField};
+export {setPhoneFieldFocus, setPhoneFieldEventListeners};

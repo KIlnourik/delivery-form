@@ -5,7 +5,13 @@ import {
   MAP_ADDRESS_SCALE,
   CITIES_CENTER_COORDINATES,
 } from '../const.js';
-import { getAddressFromMap, getEqualInObj } from '../utils.js';
+import { getEqualInObj } from './utils.js';
+
+// Функция, получающая адрес с карты
+const getAddressFromMap = (coordinates) => {
+  const { lat, lng } = coordinates;
+  return `${lat.toFixed(6)},${lng.toFixed(6)}`;
+};
 
 const map = L.map('map')
   .setView({

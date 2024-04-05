@@ -1,5 +1,5 @@
-import { validateForm } from './utils.js';
-import { DeliveryType } from './const.js';
+import { validateForm } from '../form-validation.js';
+import { DeliveryType } from '../const.js';
 
 const deliveryForm = document.querySelector('.tabs-block__delivery');
 const pickUpForm = document.querySelector('.tabs-block__pick-up');

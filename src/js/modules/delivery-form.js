@@ -1,6 +1,7 @@
-import { onFormSubmit, setEventListenerOnPayTabs, validateForm } from './utils.js';
-import { setEventListenersToCardField } from './form-fields/card-fields.js';
-import { setEventListenersToPhoneField } from './form-fields/phone-field.js';
+import { setPayTabsEventListener } from './tabs/pay-tabs.js';
+import { onFormSubmit, validateForm } from './form-validation.js';
+import { setCardFieldEventListeners } from './form-fields/card-fields.js';
+import { setPhoneFieldEventListeners } from './form-fields/phone-field.js';
 import { DeliveryType } from './const.js';
 
 const deliveryBlock = document.querySelector('.tabs-block__delivery');
@@ -19,10 +20,9 @@ submitBtn.disabled = true;
 
 const formInputs = [addressInput, dateInput, phoneInput, timeIntervalInput];
 
-setEventListenerOnPayTabs(payTabs);
-setEventListenersToCardField(cardInputs);
-setEventListenersToPhoneField(phoneInput);
+setPayTabsEventListener(payTabs);
+setCardFieldEventListeners(cardInputs);
+setPhoneFieldEventListeners(phoneInput);
 
 deliveryForm.addEventListener('input', () => validateForm(DeliveryType.delivery));
-
 deliveryForm.addEventListener('submit', (evt) => onFormSubmit(evt, submitBtn, cardInputs, formInputs));

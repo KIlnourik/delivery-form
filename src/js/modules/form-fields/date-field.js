@@ -1,8 +1,8 @@
-import dayjs from 'https://cdn.skypack.dev/dayjs@1.11.10';
-import 'https://cdn.skypack.dev/dayjs@1.11.10/locale/ru';
-import customParseFormat from 'https://cdn.skypack.dev/dayjs@1.11.10/plugin/customParseFormat';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { INPUT_ERR0R_CLASS, INPUT_SUCCESS_CLASS, DATE_MASK } from '../const.js';
-import { setStatusClassToContainer } from '../utils.js';
+import { setContainerStatusClass } from '../utils/utils.js';
 
 
 dayjs.locale('ru');
@@ -17,7 +17,7 @@ const isDateValid = (dateInput, dateInputWrapper) => {
   const date = dayjs(dateInput.value, DATE_MASK, 'ru');
   const now = dayjs().locale('ru');
   const period = now.add(1, 'week');
-  setStatusClassToContainer(dateInputWrapper, date.isValid() && date >= now && date <= period);
+  setContainerStatusClass(dateInputWrapper, date.isValid() && date >= now && date <= period);
   return date.isValid() && date >= now && date <= period;
 };
 
